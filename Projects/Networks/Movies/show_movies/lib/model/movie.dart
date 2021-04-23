@@ -1,8 +1,6 @@
 library movie;
 
-import 'dart:convert';
 import 'package:built_collection/built_collection.dart';
-import 'package:built_value/async_serializer.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'serializers.dart';
@@ -10,6 +8,10 @@ import 'serializers.dart';
 part 'movie.g.dart';
 
 abstract class Movie implements Built<Movie, MovieBuilder> {
+  factory Movie([void Function(MovieBuilder b) updates]) = _$Movie;
+
+  Movie._();
+
   @nullable
   @BuiltValueField(wireName: 'adult')
   bool get adult;
@@ -66,10 +68,6 @@ abstract class Movie implements Built<Movie, MovieBuilder> {
   @BuiltValueField(wireName: 'vote_count')
   int get voteCount;
 
-  Movie._();
-
-  factory Movie([void updates(MovieBuilder b)]) = _$Movie;
-
   Map<String, dynamic> toJson() {
     return serializers.serializeWith(Movie.serializer, this)
         as Map<String, dynamic>;
@@ -84,6 +82,11 @@ abstract class Movie implements Built<Movie, MovieBuilder> {
 
 abstract class MovieResults
     implements Built<MovieResults, MovieResultsBuilder> {
+  factory MovieResults([void Function(MovieResultsBuilder b) updates]) =
+      _$MovieResults;
+
+  MovieResults._();
+
   @nullable
   int get page;
 
@@ -98,10 +101,6 @@ abstract class MovieResults
   @nullable
   BuiltList<Movie> get results;
 
-  MovieResults._();
-
-  factory MovieResults([void updates(MovieResultsBuilder b)]) = _$MovieResults;
-
   Map<String, dynamic> toJson() {
     return serializers.serializeWith(MovieResults.serializer, this)
         as Map<String, dynamic>;
@@ -115,6 +114,11 @@ abstract class MovieResults
 }
 
 abstract class MovieGenre implements Built<MovieGenre, MovieGenreBuilder> {
+  factory MovieGenre([void Function(MovieGenreBuilder b) updates]) =
+      _$MovieGenre;
+
+  MovieGenre._();
+
   @nullable
   @BuiltValueField(wireName: 'id')
   int get id;
@@ -122,10 +126,6 @@ abstract class MovieGenre implements Built<MovieGenre, MovieGenreBuilder> {
   @nullable
   @BuiltValueField(wireName: 'name')
   String get name;
-
-  MovieGenre._();
-
-  factory MovieGenre([void updates(MovieGenreBuilder b)]) = _$MovieGenre;
 
   Map<String, dynamic> toJson() {
     return serializers.serializeWith(MovieGenre.serializer, this)
@@ -141,14 +141,15 @@ abstract class MovieGenre implements Built<MovieGenre, MovieGenreBuilder> {
 
 abstract class MovieGenreResults
     implements Built<MovieGenreResults, MovieGenreResultsBuilder> {
-  @nullable
-  @BuiltValueField(wireName: 'genres')
-  BuiltList<MovieGenre> get results;
+  factory MovieGenreResults(
+          [void Function(MovieGenreResultsBuilder b) updates]) =
+      _$MovieGenreResults;
 
   MovieGenreResults._();
 
-  factory MovieGenreResults([void updates(MovieGenreResultsBuilder b)]) =
-      _$MovieGenreResults;
+  @nullable
+  @BuiltValueField(wireName: 'genres')
+  BuiltList<MovieGenre> get results;
 
   Map<String, dynamic> toJson() {
     return serializers.serializeWith(MovieGenreResults.serializer, this)
@@ -165,6 +166,9 @@ abstract class MovieGenreResults
 }
 
 abstract class MovieCast implements Built<MovieCast, MovieCastBuilder> {
+  factory MovieCast([void Function(MovieCastBuilder b) updates]) = _$MovieCast;
+  MovieCast._();
+
   @nullable
   @BuiltValueField(wireName: 'adult')
   bool get adult;
@@ -213,10 +217,6 @@ abstract class MovieCast implements Built<MovieCast, MovieCastBuilder> {
   @BuiltValueField(wireName: 'order')
   int get order;
 
-  MovieCast._();
-
-  factory MovieCast([void updates(MovieCastBuilder b)]) = _$MovieCast;
-
   Map<String, dynamic> toJson() {
     return serializers.serializeWith(MovieCast.serializer, this)
         as Map<String, dynamic>;
@@ -231,6 +231,10 @@ abstract class MovieCast implements Built<MovieCast, MovieCastBuilder> {
 
 abstract class MovieCastResults
     implements Built<MovieCastResults, MovieCastResultsBuilder> {
+  factory MovieCastResults([void Function(MovieCastResultsBuilder b) updates]) =
+      _$MovieCastResults;
+
+  MovieCastResults._();
   @nullable
   @BuiltValueField(wireName: 'id')
   int get id;
@@ -238,11 +242,6 @@ abstract class MovieCastResults
   @nullable
   @BuiltValueField(wireName: 'cast')
   BuiltList<MovieCast> get castResults;
-
-  MovieCastResults._();
-
-  factory MovieCastResults([void updates(MovieCastResultsBuilder b)]) =
-      _$MovieCastResults;
 
   Map<String, dynamic> toJson() {
     return serializers.serializeWith(MovieCastResults.serializer, this)
@@ -259,6 +258,10 @@ abstract class MovieCastResults
 
 abstract class MovieDetails
     implements Built<MovieDetails, MovieDetailsBuilder> {
+  factory MovieDetails([void Function(MovieDetailsBuilder b) updates]) =
+      _$MovieDetails;
+
+  MovieDetails._();
   @nullable
   @BuiltValueField(wireName: 'original_title')
   String get originalTitle;
@@ -295,10 +298,6 @@ abstract class MovieDetails
   @BuiltValueField(wireName: 'imdb_id')
   String get imdbId;
 
-  MovieDetails._();
-
-  factory MovieDetails([void updates(MovieDetailsBuilder b)]) = _$MovieDetails;
-
   Map<String, dynamic> toJson() {
     return serializers.serializeWith(MovieDetails.serializer, this)
         as Map<String, dynamic>;
@@ -313,6 +312,11 @@ abstract class MovieDetails
 
 abstract class MovieCredits
     implements Built<MovieCredits, MovieCreditsBuilder> {
+  factory MovieCredits([void Function(MovieCreditsBuilder b) updates]) =
+      _$MovieCredits;
+
+  MovieCredits._();
+
   @nullable
   @BuiltValueField(wireName: 'character')
   String get character;
@@ -377,10 +381,6 @@ abstract class MovieCredits
   @BuiltValueField(wireName: 'poster_path')
   String get posterPath;
 
-  MovieCredits._();
-
-  factory MovieCredits([void updates(MovieCreditsBuilder b)]) = _$MovieCredits;
-
   Map<String, dynamic> toJson() {
     return serializers.serializeWith(MovieCredits.serializer, this)
         as Map<String, dynamic>;
@@ -394,6 +394,9 @@ abstract class MovieCredits
 }
 
 abstract class TvCredits implements Built<TvCredits, TvCreditsBuilder> {
+  factory TvCredits([void Function(TvCreditsBuilder b) updates]) = _$TvCredits;
+
+  TvCredits._();
   @nullable
   @BuiltValueField(wireName: 'credit_id')
   String get creditId;
@@ -458,10 +461,6 @@ abstract class TvCredits implements Built<TvCredits, TvCreditsBuilder> {
   @BuiltValueField(wireName: 'origin_country')
   BuiltList<String> get originCountry;
 
-  TvCredits._();
-
-  factory TvCredits([void updates(TvCreditsBuilder b)]) = _$TvCredits;
-
   Map<String, dynamic> toJson() {
     return serializers.serializeWith(TvCredits.serializer, this)
         as Map<String, dynamic>;
@@ -476,6 +475,11 @@ abstract class TvCredits implements Built<TvCredits, TvCreditsBuilder> {
 
 abstract class MovieCreditsResults
     implements Built<MovieCreditsResults, MovieCreditsResultsBuilder> {
+  factory MovieCreditsResults(
+          [void Function(MovieCreditsResultsBuilder b) updates]) =
+      _$MovieCreditsResults;
+
+  MovieCreditsResults._();
   @nullable
   @BuiltValueField(wireName: 'id')
   int get id;
@@ -483,11 +487,6 @@ abstract class MovieCreditsResults
   @nullable
   @BuiltValueField(wireName: 'cast')
   BuiltList<MovieCredits> get movieCreditsResults;
-
-  MovieCreditsResults._();
-
-  factory MovieCreditsResults([void updates(MovieCreditsResultsBuilder b)]) =
-      _$MovieCreditsResults;
 
   Map<String, dynamic> toJson() {
     return serializers.serializeWith(MovieCreditsResults.serializer, this)
@@ -505,6 +504,11 @@ abstract class MovieCreditsResults
 
 abstract class TvCreditsResults
     implements Built<TvCreditsResults, TvCreditsResultsBuilder> {
+  factory TvCreditsResults([void Function(TvCreditsResultsBuilder b) updates]) =
+      _$TvCreditsResults;
+
+  TvCreditsResults._();
+
   @nullable
   @BuiltValueField(wireName: 'id')
   int get id;
@@ -512,11 +516,6 @@ abstract class TvCreditsResults
   @nullable
   @BuiltValueField(wireName: 'cast')
   BuiltList<TvCredits> get tvCreditsResults;
-
-  TvCreditsResults._();
-
-  factory TvCreditsResults([void updates(TvCreditsResultsBuilder b)]) =
-      _$TvCreditsResults;
 
   Map<String, dynamic> toJson() {
     return serializers.serializeWith(TvCreditsResults.serializer, this)

@@ -1,27 +1,19 @@
-import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
 import 'package:show_movies/model/movie.dart';
 import 'package:show_movies/network/network_service.dart';
-import 'package:built_value/built_value.dart';
-import 'package:built_collection/built_collection.dart';
-import 'package:show_movies/views/book_tickets/book_tickets_page.dart';
-import 'package:show_movies/views/home/home_page.dart';
 
 class CastDetailsPageSliver extends StatefulWidget {
-  final String name;
-  final String profilePath;
-  final int id;
-  CastDetailsPageSliver({
+  const CastDetailsPageSliver({
     Key key,
     this.name,
     this.profilePath,
     this.id,
   }) : super(key: key);
+  final String name;
+  final String profilePath;
+  final int id;
 
   @override
   _CastDetailsPageSliverState createState() => _CastDetailsPageSliverState();
@@ -30,7 +22,7 @@ class CastDetailsPageSliver extends StatefulWidget {
 class _CastDetailsPageSliverState extends State<CastDetailsPageSliver>
     with SingleTickerProviderStateMixin {
   TabController _controller;
-  int _selectedIndex;
+  //int _selectedIndex;
   @override
   void initState() {
     super.initState();
@@ -38,7 +30,7 @@ class _CastDetailsPageSliverState extends State<CastDetailsPageSliver>
     //print(widget.name);
     _controller.addListener(() {
       setState(() {
-        _selectedIndex = _controller.index;
+        // _selectedIndex = _controller.index;
       });
     });
   }
@@ -57,49 +49,35 @@ class _CastDetailsPageSliverState extends State<CastDetailsPageSliver>
                 //snap: true,
                 floating: true,
                 pinned: true,
-                flexibleSpace: Container(
-                  // decoration: BoxDecoration(
-                  //   gradient: LinearGradient(
-                  //     begin: Alignment.centerLeft,
-                  //     end: Alignment.centerRight,
-                  //     colors: [
-                  //       Colors.blue,
-                  //       Colors.deepPurpleAccent,
-                  //     ],
-                  //   ),
-                  // ),
-                  child: FlexibleSpaceBar(
-                    background: Container(
-                      child: Container(
-                        padding: EdgeInsets.all(50.0),
-                        child: CircleAvatar(
-                          radius: 500,
-                          backgroundImage: NetworkImage(
-                            imageSource + widget.profilePath,
-                            //scale: 0.5,
-                          ),
-                        ),
-                      ),
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.centerLeft,
-                          end: Alignment.centerRight,
-                          colors: [
-                            Colors.blue,
-                            Colors.deepPurpleAccent,
-                          ],
+                flexibleSpace: FlexibleSpaceBar(
+                  background: Container(
+                    child: Container(
+                      padding: const EdgeInsets.all(50.0),
+                      child: CircleAvatar(
+                        radius: 500,
+                        backgroundImage: NetworkImage(
+                          imageSource + widget.profilePath,
+                          //scale: 0.5,
                         ),
                       ),
                     ),
-                    centerTitle: true,
-                    title: Container(
-                      child: Text(widget.name,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16.0,
-                          )),
+                    decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.centerLeft,
+                        end: Alignment.centerRight,
+                        colors: <Color>[
+                          Colors.blue,
+                          Colors.deepPurpleAccent,
+                        ],
+                      ),
                     ),
                   ),
+                  centerTitle: true,
+                  title: Text(widget.name,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 16.0,
+                      )),
                 ),
               ),
               SliverPersistentHeader(
@@ -108,7 +86,7 @@ class _CastDetailsPageSliverState extends State<CastDetailsPageSliver>
                     labelColor: Colors.white,
                     indicatorColor: Colors.greenAccent,
                     controller: _controller,
-                    tabs: [
+                    tabs: const <Widget>[
                       Tab(
                         icon: Icon(
                           Icons.movie,
@@ -165,34 +143,35 @@ class _CastDetailsPageSliverState extends State<CastDetailsPageSliver>
           // ),
           body: TabBarView(
             controller: _controller,
-            children: [
-              Container(
-                //padding: EdgeInsets.only(top: 15.0),
-                child: FutureBuilder<MovieCreditsResults>(
-                  future: fetchMovieCredits(widget.id),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasError) print(snapshot.error);
+            children: <Widget>[
+              FutureBuilder<MovieCreditsResults>(
+                future: fetchMovieCredits(widget.id),
+                builder: (BuildContext context,
+                    AsyncSnapshot<MovieCreditsResults> snapshot) {
+                  if (snapshot.hasError) {
+                    print(snapshot.error);
+                  }
 
-                    return snapshot.hasData
-                        ? MovieCreditsDisplay(
-                            movieCredits:
-                                snapshot.data.movieCreditsResults.toList())
-                        : Center(child: CircularProgressIndicator());
-                  },
-                ),
+                  return snapshot.hasData
+                      ? MovieCreditsDisplay(
+                          movieCredits:
+                              snapshot.data.movieCreditsResults.toList())
+                      : const Center(child: CircularProgressIndicator());
+                },
               ),
-              Container(
-                child: FutureBuilder<TvCreditsResults>(
-                  future: fetchTvCredits(widget.id),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasError) print(snapshot.error);
+              FutureBuilder<TvCreditsResults>(
+                future: fetchTvCredits(widget.id),
+                builder: (BuildContext context,
+                    AsyncSnapshot<TvCreditsResults> snapshot) {
+                  if (snapshot.hasError) {
+                    print(snapshot.error);
+                  }
 
-                    return snapshot.hasData
-                        ? TvCreditsDisplay(
-                            tvCredits: snapshot.data.tvCreditsResults.toList())
-                        : Center(child: CircularProgressIndicator());
-                  },
-                ),
+                  return snapshot.hasData
+                      ? TvCreditsDisplay(
+                          tvCredits: snapshot.data.tvCreditsResults.toList())
+                      : const Center(child: CircularProgressIndicator());
+                },
               ),
             ],
           ),
@@ -203,22 +182,22 @@ class _CastDetailsPageSliverState extends State<CastDetailsPageSliver>
 }
 
 class MovieCreditsDisplay extends StatelessWidget {
-  final List<MovieCredits> movieCredits;
-
   MovieCreditsDisplay({Key key, this.movieCredits}) : super(key: key);
+
+  final List<MovieCredits> movieCredits;
 
   final List<MovieGenre> genreLists = genreParsed.results.toList();
 
   Widget genreGenerate(List<int> genreIds) {
-    String genreResult = "";
-    int length = genreIds.length - 1;
+    String genreResult = '';
+    final int length = genreIds.length - 1;
     int counter = 0;
-    for (var iter in genreIds) {
-      MovieGenre currentGenre =
-          genreLists.firstWhere((element) => element.id == iter);
+    for (final int iter in genreIds) {
+      final MovieGenre currentGenre =
+          genreLists.firstWhere((MovieGenre element) => element.id == iter);
 
       if (counter < length) {
-        genreResult = genreResult + currentGenre.name.toString() + ", ";
+        genreResult = genreResult + currentGenre.name.toString() + ', ';
         counter++;
       } else {
         genreResult = genreResult + currentGenre.name.toString();
@@ -227,7 +206,7 @@ class MovieCreditsDisplay extends StatelessWidget {
 
     return Text(
       genreResult,
-      style: TextStyle(
+      style: const TextStyle(
         color: Colors.white,
         fontSize: 10.0,
         fontWeight: FontWeight.bold,
@@ -239,26 +218,26 @@ class MovieCreditsDisplay extends StatelessWidget {
   Widget build(BuildContext context) {
     // print(movieCredits);
     return Container(
-      color: Color.fromRGBO(49, 49, 61, 0.7),
-      padding: EdgeInsets.only(
+      color: const Color.fromRGBO(49, 49, 61, 0.7),
+      padding: const EdgeInsets.only(
         top: 20.0,
       ),
       child: GridView.builder(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 1,
           //childAspectRatio: 0.5,
           //mainAxisSpacing: 10.0,
           //crossAxisSpacing: 10.0,
         ),
         itemCount: movieCredits.length,
-        itemBuilder: (context, index) {
+        itemBuilder: (BuildContext context, int index) {
           return Container(
-            padding: EdgeInsets.all(
+            padding: const EdgeInsets.all(
               5.0,
             ),
             child: Column(
-              children: [
-                Container(
+              children: <Widget>[
+                SizedBox(
                   height: MediaQuery.of(context).size.height * 0.35,
                   width: double.infinity,
                   child: Image.network(
@@ -270,76 +249,74 @@ class MovieCreditsDisplay extends StatelessWidget {
                   width: double.infinity,
                   color: Colors.black.withOpacity(0.3),
                   child: Container(
-                    padding: EdgeInsets.all(10.0),
-                    child: Container(
-                      child: Column(
-                        children: [
-                          Row(
-                            children: [
-                              Text(
-                                movieCredits[index].originalTitle,
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                    padding: const EdgeInsets.all(10.0),
+                    child: Column(
+                      children: <Widget>[
+                        Row(
+                          children: <Widget>[
+                            Text(
+                              movieCredits[index].originalTitle,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
                               ),
-                              Spacer(),
-                              Text(
-                                movieCredits[index].voteAverage.toString(),
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 15.0,
-                                ),
+                            ),
+                            const Spacer(),
+                            Text(
+                              movieCredits[index].voteAverage.toString(),
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 15.0,
                               ),
-                              Container(
-                                padding: EdgeInsets.only(left: 5.0),
-                                child: Icon(
-                                  Icons.star,
-                                  color: Colors.white,
-                                  size: 18.0,
-                                ),
-                              )
-                            ],
-                          ),
-                          Container(
-                            padding: EdgeInsets.only(top: 5.0),
-                          ),
-                          Row(
-                            children: [
-                              Container(
-                                child: genreGenerate(
-                                  movieCredits[index].genre.toList(),
-                                ),
+                            ),
+                            Container(
+                              padding: const EdgeInsets.only(left: 5.0),
+                              child: const Icon(
+                                Icons.star,
+                                color: Colors.white,
+                                size: 18.0,
                               ),
-                              /* Text(
-                                movieCredits[index].genre.toString(),
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),*/
-                              Spacer(),
-                              Text(
-                                movieCredits[index].releaseDate.substring(0, 4),
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 15.0,
-                                ),
+                            )
+                          ],
+                        ),
+                        Container(
+                          padding: const EdgeInsets.only(top: 5.0),
+                        ),
+                        Row(
+                          children: <Widget>[
+                            Container(
+                              child: genreGenerate(
+                                movieCredits[index].genre.toList(),
                               ),
-                              Container(
-                                padding: EdgeInsets.only(left: 5.0),
-                                child: Icon(
-                                  Icons.date_range,
-                                  color: Colors.white,
-                                  size: 18.0,
-                                ),
-                              )
-                            ],
-                          ),
-                        ],
-                      ),
+                            ),
+                            /* Text(
+                              movieCredits[index].genre.toString(),
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),*/
+                            const Spacer(),
+                            Text(
+                              movieCredits[index].releaseDate.substring(0, 4),
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 15.0,
+                              ),
+                            ),
+                            Container(
+                              padding: const EdgeInsets.only(left: 5.0),
+                              child: const Icon(
+                                Icons.date_range,
+                                color: Colors.white,
+                                size: 18.0,
+                              ),
+                            )
+                          ],
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -353,22 +330,22 @@ class MovieCreditsDisplay extends StatelessWidget {
 }
 
 class TvCreditsDisplay extends StatelessWidget {
-  final List<TvCredits> tvCredits;
-
   TvCreditsDisplay({Key key, this.tvCredits}) : super(key: key);
+
+  final List<TvCredits> tvCredits;
 
   final List<MovieGenre> genreLists = genreParsed.results.toList();
 
   Widget genreGenerate(List<int> genreIds) {
-    String genreResult = "";
-    int length = genreIds.length - 1;
+    String genreResult = '';
+    final int length = genreIds.length - 1;
     int counter = 0;
-    for (var iter in genreIds) {
-      MovieGenre currentGenre =
-          genreLists.firstWhere((element) => element.id == iter);
+    for (final int iter in genreIds) {
+      final MovieGenre currentGenre =
+          genreLists.firstWhere((MovieGenre element) => element.id == iter);
 
       if (counter < length) {
-        genreResult = genreResult + currentGenre.name.toString() + ", ";
+        genreResult = genreResult + currentGenre.name.toString() + ', ';
         counter++;
       } else {
         genreResult = genreResult + currentGenre.name.toString();
@@ -377,7 +354,7 @@ class TvCreditsDisplay extends StatelessWidget {
 
     return Text(
       genreResult,
-      style: TextStyle(
+      style: const TextStyle(
         color: Colors.white,
         fontSize: 10,
         fontWeight: FontWeight.bold,
@@ -389,26 +366,26 @@ class TvCreditsDisplay extends StatelessWidget {
   Widget build(BuildContext context) {
     //print(tvCredits);
     return Container(
-      padding: EdgeInsets.only(
+      padding: const EdgeInsets.only(
         top: 20.0,
       ),
-      color: Color.fromRGBO(49, 49, 61, 0.7),
+      color: const Color.fromRGBO(49, 49, 61, 0.7),
       child: GridView.builder(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 1,
           //childAspectRatio: 0.5,
           //mainAxisSpacing: 10.0,
           //crossAxisSpacing: 10.0,
         ),
         itemCount: tvCredits.length,
-        itemBuilder: (context, index) {
+        itemBuilder: (BuildContext context, int index) {
           return Container(
-            padding: EdgeInsets.all(
+            padding: const EdgeInsets.all(
               5.0,
             ),
             child: Column(
-              children: [
-                Container(
+              children: <Widget>[
+                SizedBox(
                   height: MediaQuery.of(context).size.height * 0.35,
                   width: double.infinity,
                   child: Image.network(
@@ -420,76 +397,74 @@ class TvCreditsDisplay extends StatelessWidget {
                   width: double.infinity,
                   color: Colors.black.withOpacity(0.3),
                   child: Container(
-                    padding: EdgeInsets.all(10.0),
-                    child: Container(
-                      child: Column(
-                        children: [
-                          Row(
-                            children: [
-                              Text(
-                                tvCredits[index].originalName,
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                    padding: const EdgeInsets.all(10.0),
+                    child: Column(
+                      children: <Widget>[
+                        Row(
+                          children: <Widget>[
+                            Text(
+                              tvCredits[index].originalName,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
                               ),
-                              Spacer(),
-                              Text(
-                                tvCredits[index].voteAverage.toString(),
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 15.0,
-                                ),
+                            ),
+                            const Spacer(),
+                            Text(
+                              tvCredits[index].voteAverage.toString(),
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 15.0,
                               ),
-                              Container(
-                                padding: EdgeInsets.only(left: 5.0),
-                                child: Icon(
-                                  Icons.star,
-                                  color: Colors.white,
-                                  size: 18.0,
-                                ),
-                              )
-                            ],
-                          ),
-                          Container(
-                            padding: EdgeInsets.only(top: 5.0),
-                          ),
-                          Row(
-                            children: [
-                              Container(
-                                child: genreGenerate(
-                                  tvCredits[index].genreIds.toList(),
-                                ),
+                            ),
+                            Container(
+                              padding: const EdgeInsets.only(left: 5.0),
+                              child: const Icon(
+                                Icons.star,
+                                color: Colors.white,
+                                size: 18.0,
                               ),
-                              // Text(
-                              //   tvCredits[index].genreIds.toString(),
-                              //   style: TextStyle(
-                              //     color: Colors.white,
-                              //     fontSize: 15,
-                              //     fontWeight: FontWeight.bold,
-                              //   ),
-                              // ),
-                              Spacer(),
-                              Text(
-                                tvCredits[index].firstAirDate.substring(0, 4),
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 15.0,
-                                ),
+                            )
+                          ],
+                        ),
+                        Container(
+                          padding: const EdgeInsets.only(top: 5.0),
+                        ),
+                        Row(
+                          children: <Widget>[
+                            Container(
+                              child: genreGenerate(
+                                tvCredits[index].genreIds.toList(),
                               ),
-                              Container(
-                                padding: EdgeInsets.only(left: 5.0),
-                                child: Icon(
-                                  Icons.date_range,
-                                  color: Colors.white,
-                                  size: 18.0,
-                                ),
-                              )
-                            ],
-                          ),
-                        ],
-                      ),
+                            ),
+                            // Text(
+                            //   tvCredits[index].genreIds.toString(),
+                            //   style: TextStyle(
+                            //     color: Colors.white,
+                            //     fontSize: 15,
+                            //     fontWeight: FontWeight.bold,
+                            //   ),
+                            // ),
+                            const Spacer(),
+                            Text(
+                              tvCredits[index].firstAirDate.substring(0, 4),
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 15.0,
+                              ),
+                            ),
+                            Container(
+                              padding: const EdgeInsets.only(left: 5.0),
+                              child: const Icon(
+                                Icons.date_range,
+                                color: Colors.white,
+                                size: 18.0,
+                              ),
+                            )
+                          ],
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -515,12 +490,12 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return new Container(
-      decoration: BoxDecoration(
+    return Container(
+      decoration: const BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.centerLeft,
           end: Alignment.centerRight,
-          colors: [
+          colors: <Color>[
             Colors.blue,
             Colors.deepPurpleAccent,
           ],

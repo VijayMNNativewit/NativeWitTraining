@@ -1,27 +1,19 @@
-import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
 import 'package:show_movies/model/movie.dart';
 import 'package:show_movies/network/network_service.dart';
-import 'package:built_value/built_value.dart';
-import 'package:built_collection/built_collection.dart';
-import 'package:show_movies/views/book_tickets/book_tickets_page.dart';
-import 'package:show_movies/views/home/home_page.dart';
 
 class CastDetailsPage extends StatefulWidget {
-  final String name;
-  final String profilePath;
-  final int id;
-  CastDetailsPage({
+  const CastDetailsPage({
     Key key,
     this.name,
     this.profilePath,
     this.id,
   }) : super(key: key);
+  final String name;
+  final String profilePath;
+  final int id;
 
   @override
   _CastDetailsPageState createState() => _CastDetailsPageState();
@@ -30,7 +22,7 @@ class CastDetailsPage extends StatefulWidget {
 class _CastDetailsPageState extends State<CastDetailsPage>
     with SingleTickerProviderStateMixin {
   TabController _controller;
-  int _selectedIndex;
+  //int _selectedIndex;
   @override
   void initState() {
     super.initState();
@@ -38,7 +30,7 @@ class _CastDetailsPageState extends State<CastDetailsPage>
     //print(widget.name);
     _controller.addListener(() {
       setState(() {
-        _selectedIndex = _controller.index;
+        //_selectedIndex = _controller.index;
       });
     });
   }
@@ -50,7 +42,7 @@ class _CastDetailsPageState extends State<CastDetailsPage>
       child: Scaffold(
         appBar: AppBar(
           leading: IconButton(
-            icon: Icon(
+            icon: const Icon(
               Icons.arrow_back,
               size: 28,
             ),
@@ -63,7 +55,7 @@ class _CastDetailsPageState extends State<CastDetailsPage>
             indicatorColor: Colors.greenAccent,
             //labelColor: Colors.white,
             controller: _controller,
-            tabs: [
+            tabs: const <Widget>[
               Tab(
                 icon: Icon(
                   Icons.movie,
@@ -83,34 +75,35 @@ class _CastDetailsPageState extends State<CastDetailsPage>
         ),
         body: TabBarView(
           controller: _controller,
-          children: [
-            Container(
-              //padding: EdgeInsets.only(top: 15.0),
-              child: FutureBuilder<MovieCreditsResults>(
-                future: fetchMovieCredits(widget.id),
-                builder: (context, snapshot) {
-                  if (snapshot.hasError) print(snapshot.error);
+          children: <Widget>[
+            FutureBuilder<MovieCreditsResults>(
+              future: fetchMovieCredits(widget.id),
+              builder: (BuildContext context,
+                  AsyncSnapshot<MovieCreditsResults> snapshot) {
+                if (snapshot.hasError) {
+                  print(snapshot.error);
+                }
 
-                  return snapshot.hasData
-                      ? MovieCreditsDisplay(
-                          movieCredits:
-                              snapshot.data.movieCreditsResults.toList())
-                      : Center(child: CircularProgressIndicator());
-                },
-              ),
+                return snapshot.hasData
+                    ? MovieCreditsDisplay(
+                        movieCredits:
+                            snapshot.data.movieCreditsResults.toList())
+                    : const Center(child: CircularProgressIndicator());
+              },
             ),
-            Container(
-              child: FutureBuilder<TvCreditsResults>(
-                future: fetchTvCredits(widget.id),
-                builder: (context, snapshot) {
-                  if (snapshot.hasError) print(snapshot.error);
+            FutureBuilder<TvCreditsResults>(
+              future: fetchTvCredits(widget.id),
+              builder: (BuildContext context,
+                  AsyncSnapshot<TvCreditsResults> snapshot) {
+                if (snapshot.hasError) {
+                  print(snapshot.error);
+                }
 
-                  return snapshot.hasData
-                      ? TvCreditsDisplay(
-                          tvCredits: snapshot.data.tvCreditsResults.toList())
-                      : Center(child: CircularProgressIndicator());
-                },
-              ),
+                return snapshot.hasData
+                    ? TvCreditsDisplay(
+                        tvCredits: snapshot.data.tvCreditsResults.toList())
+                    : const Center(child: CircularProgressIndicator());
+              },
             ),
           ],
         ),
@@ -120,34 +113,34 @@ class _CastDetailsPageState extends State<CastDetailsPage>
 }
 
 class MovieCreditsDisplay extends StatelessWidget {
-  final List<MovieCredits> movieCredits;
+  const MovieCreditsDisplay({Key key, this.movieCredits}) : super(key: key);
 
-  MovieCreditsDisplay({Key key, this.movieCredits}) : super(key: key);
+  final List<MovieCredits> movieCredits;
 
   @override
   Widget build(BuildContext context) {
     // print(movieCredits);
     return Container(
-      color: Color.fromRGBO(49, 49, 61, 0.7),
-      padding: EdgeInsets.only(
+      color: const Color.fromRGBO(49, 49, 61, 0.7),
+      padding: const EdgeInsets.only(
         top: 20.0,
       ),
       child: GridView.builder(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 1,
           //childAspectRatio: 0.5,
           //mainAxisSpacing: 10.0,
           //crossAxisSpacing: 10.0,
         ),
         itemCount: movieCredits.length,
-        itemBuilder: (context, index) {
+        itemBuilder: (BuildContext context, int index) {
           return Container(
-            padding: EdgeInsets.all(
+            padding: const EdgeInsets.all(
               5.0,
             ),
             child: Column(
-              children: [
-                Container(
+              children: <Widget>[
+                SizedBox(
                   height: MediaQuery.of(context).size.height * 0.35,
                   width: double.infinity,
                   child: Image.network(
@@ -159,71 +152,69 @@ class MovieCreditsDisplay extends StatelessWidget {
                   width: double.infinity,
                   color: Colors.black.withOpacity(0.3),
                   child: Container(
-                    padding: EdgeInsets.all(10.0),
-                    child: Container(
-                      child: Column(
-                        children: [
-                          Row(
-                            children: [
-                              Text(
-                                movieCredits[index].originalTitle,
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                    padding: const EdgeInsets.all(10.0),
+                    child: Column(
+                      children: <Widget>[
+                        Row(
+                          children: <Widget>[
+                            Text(
+                              movieCredits[index].originalTitle,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
                               ),
-                              Spacer(),
-                              Text(
-                                movieCredits[index].voteAverage.toString(),
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 15.0,
-                                ),
+                            ),
+                            const Spacer(),
+                            Text(
+                              movieCredits[index].voteAverage.toString(),
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 15.0,
                               ),
-                              Container(
-                                padding: EdgeInsets.only(left: 5.0),
-                                child: Icon(
-                                  Icons.star,
-                                  color: Colors.white,
-                                  size: 18.0,
-                                ),
-                              )
-                            ],
-                          ),
-                          Container(
-                            padding: EdgeInsets.only(top: 5.0),
-                          ),
-                          Row(
-                            children: [
-                              Text(
-                                movieCredits[index].genre.toString(),
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                            ),
+                            Container(
+                              padding: const EdgeInsets.only(left: 5.0),
+                              child: const Icon(
+                                Icons.star,
+                                color: Colors.white,
+                                size: 18.0,
                               ),
-                              Spacer(),
-                              Text(
-                                movieCredits[index].releaseDate.substring(0, 4),
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 15.0,
-                                ),
+                            )
+                          ],
+                        ),
+                        Container(
+                          padding: const EdgeInsets.only(top: 5.0),
+                        ),
+                        Row(
+                          children: <Widget>[
+                            Text(
+                              movieCredits[index].genre.toString(),
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
                               ),
-                              Container(
-                                padding: EdgeInsets.only(left: 5.0),
-                                child: Icon(
-                                  Icons.date_range,
-                                  color: Colors.white,
-                                  size: 18.0,
-                                ),
-                              )
-                            ],
-                          ),
-                        ],
-                      ),
+                            ),
+                            const Spacer(),
+                            Text(
+                              movieCredits[index].releaseDate.substring(0, 4),
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 15.0,
+                              ),
+                            ),
+                            Container(
+                              padding: const EdgeInsets.only(left: 5.0),
+                              child: const Icon(
+                                Icons.date_range,
+                                color: Colors.white,
+                                size: 18.0,
+                              ),
+                            )
+                          ],
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -237,34 +228,34 @@ class MovieCreditsDisplay extends StatelessWidget {
 }
 
 class TvCreditsDisplay extends StatelessWidget {
-  final List<TvCredits> tvCredits;
+  const TvCreditsDisplay({Key key, this.tvCredits}) : super(key: key);
 
-  TvCreditsDisplay({Key key, this.tvCredits}) : super(key: key);
+  final List<TvCredits> tvCredits;
 
   @override
   Widget build(BuildContext context) {
     print(tvCredits);
     return Container(
-      padding: EdgeInsets.only(
+      padding: const EdgeInsets.only(
         top: 20.0,
       ),
-      color: Color.fromRGBO(49, 49, 61, 0.7),
+      color: const Color.fromRGBO(49, 49, 61, 0.7),
       child: GridView.builder(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 1,
           //childAspectRatio: 0.5,
           //mainAxisSpacing: 10.0,
           //crossAxisSpacing: 10.0,
         ),
         itemCount: tvCredits.length,
-        itemBuilder: (context, index) {
+        itemBuilder: (BuildContext context, int index) {
           return Container(
-            padding: EdgeInsets.all(
+            padding: const EdgeInsets.all(
               5.0,
             ),
             child: Column(
-              children: [
-                Container(
+              children: <Widget>[
+                SizedBox(
                   height: MediaQuery.of(context).size.height * 0.35,
                   width: double.infinity,
                   child: Image.network(
@@ -276,71 +267,69 @@ class TvCreditsDisplay extends StatelessWidget {
                   width: double.infinity,
                   color: Colors.black.withOpacity(0.3),
                   child: Container(
-                    padding: EdgeInsets.all(10.0),
-                    child: Container(
-                      child: Column(
-                        children: [
-                          Row(
-                            children: [
-                              Text(
-                                tvCredits[index].originalName,
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                    padding: const EdgeInsets.all(10.0),
+                    child: Column(
+                      children: <Widget>[
+                        Row(
+                          children: <Widget>[
+                            Text(
+                              tvCredits[index].originalName,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
                               ),
-                              Spacer(),
-                              Text(
-                                tvCredits[index].voteAverage.toString(),
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 15.0,
-                                ),
+                            ),
+                            const Spacer(),
+                            Text(
+                              tvCredits[index].voteAverage.toString(),
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 15.0,
                               ),
-                              Container(
-                                padding: EdgeInsets.only(left: 5.0),
-                                child: Icon(
-                                  Icons.star,
-                                  color: Colors.white,
-                                  size: 18.0,
-                                ),
-                              )
-                            ],
-                          ),
-                          Container(
-                            padding: EdgeInsets.only(top: 5.0),
-                          ),
-                          Row(
-                            children: [
-                              Text(
-                                tvCredits[index].genreIds.toString(),
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                            ),
+                            Container(
+                              padding: const EdgeInsets.only(left: 5.0),
+                              child: const Icon(
+                                Icons.star,
+                                color: Colors.white,
+                                size: 18.0,
                               ),
-                              Spacer(),
-                              Text(
-                                tvCredits[index].firstAirDate.substring(0, 4),
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 15.0,
-                                ),
+                            )
+                          ],
+                        ),
+                        Container(
+                          padding: const EdgeInsets.only(top: 5.0),
+                        ),
+                        Row(
+                          children: <Widget>[
+                            Text(
+                              tvCredits[index].genreIds.toString(),
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
                               ),
-                              Container(
-                                padding: EdgeInsets.only(left: 5.0),
-                                child: Icon(
-                                  Icons.date_range,
-                                  color: Colors.white,
-                                  size: 18.0,
-                                ),
-                              )
-                            ],
-                          ),
-                        ],
-                      ),
+                            ),
+                            const Spacer(),
+                            Text(
+                              tvCredits[index].firstAirDate.substring(0, 4),
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 15.0,
+                              ),
+                            ),
+                            Container(
+                              padding: const EdgeInsets.only(left: 5.0),
+                              child: const Icon(
+                                Icons.date_range,
+                                color: Colors.white,
+                                size: 18.0,
+                              ),
+                            )
+                          ],
+                        ),
+                      ],
                     ),
                   ),
                 ),

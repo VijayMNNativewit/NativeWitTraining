@@ -1,6 +1,3 @@
-import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
@@ -9,6 +6,7 @@ import 'package:show_movies/network/network_service.dart';
 import 'package:show_movies/views/movie_details/movie_details_page.dart';
 
 class HomePage extends StatefulWidget {
+  const HomePage({Key key}) : super(key: key);
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -17,7 +15,7 @@ class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
   //final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   TabController _controller;
-  int _selectedIndex = 0;
+  //int _selectedIndex = 0;
 
   @override
   void initState() {
@@ -26,7 +24,7 @@ class _HomePageState extends State<HomePage>
     genreMapGenerator();
     _controller.addListener(() {
       setState(() {
-        _selectedIndex = _controller.index;
+        //  _selectedIndex = _controller.index;
       });
     });
   }
@@ -43,7 +41,7 @@ class _HomePageState extends State<HomePage>
           ),*/
           leading: Builder(builder: (BuildContext context) {
             return IconButton(
-              icon: Icon(
+              icon: const Icon(
                 Icons.menu,
                 size: 30.0,
               ),
@@ -51,13 +49,13 @@ class _HomePageState extends State<HomePage>
             );
           }),
           title: Container(
-            padding: EdgeInsets.all(
+            padding: const EdgeInsets.all(
               10.0,
             ),
             child: Row(
-              children: [
-                Text(
-                  "Book Movie",
+              children: <Widget>[
+                const Text(
+                  'Book Movie',
                   style: TextStyle(
                     fontSize: 25.0,
                     fontWeight: FontWeight.bold,
@@ -67,12 +65,12 @@ class _HomePageState extends State<HomePage>
               ],
             ),
           ),
-          actions: [
+          actions: <Widget>[
             Container(
-              padding: EdgeInsets.all(
+              padding: const EdgeInsets.all(
                 10.0,
               ),
-              child: Icon(
+              child: const Icon(
                 Icons.search,
                 size: 30.0,
               ),
@@ -80,15 +78,15 @@ class _HomePageState extends State<HomePage>
           ],
           bottom: TabBar(
             controller: _controller,
-            tabs: [
+            tabs: const <Widget>[
               Tab(
-                text: "POPULAR",
+                text: 'POPULAR',
               ),
               Tab(
-                text: "TOP-RATED",
+                text: 'TOP-RATED',
               ),
               Tab(
-                text: "UPCOMING",
+                text: 'UPCOMING',
               ),
             ],
           ),
@@ -98,15 +96,15 @@ class _HomePageState extends State<HomePage>
         drawer: Drawer(
           elevation: 16.0,
           child: Container(
-            color: Color.fromRGBO(49, 49, 61, 0.7),
+            color: const Color.fromRGBO(49, 49, 61, 0.7),
             child: ListView(
-              children: [
-                DrawerHeader(
+              children: <Widget>[
+                const DrawerHeader(
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       begin: Alignment.centerLeft,
                       end: Alignment.centerRight,
-                      colors: [
+                      colors: <Color>[
                         Colors.blue,
                         Colors.deepPurpleAccent,
                       ],
@@ -116,13 +114,13 @@ class _HomePageState extends State<HomePage>
                 ),
                 ListTile(
                   onTap: () {},
-                  leading: Icon(
+                  leading: const Icon(
                     Icons.movie,
                     color: Colors.deepPurple,
                     size: 30,
                   ),
-                  title: Text(
-                    "Movies",
+                  title: const Text(
+                    'Movies',
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -132,13 +130,13 @@ class _HomePageState extends State<HomePage>
                 ),
                 ListTile(
                   onTap: () {},
-                  leading: Icon(
+                  leading: const Icon(
                     Icons.live_tv,
                     color: Colors.deepPurple,
                     size: 30,
                   ),
-                  title: Text(
-                    "TV Shows",
+                  title: const Text(
+                    'TV Shows',
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -148,13 +146,13 @@ class _HomePageState extends State<HomePage>
                 ),
                 ListTile(
                   onTap: () {},
-                  leading: Icon(
+                  leading: const Icon(
                     Icons.event_seat,
                     color: Colors.deepPurple,
                     size: 30,
                   ),
-                  title: Text(
-                    "Discover",
+                  title: const Text(
+                    'Discover',
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -164,13 +162,13 @@ class _HomePageState extends State<HomePage>
                 ),
                 ListTile(
                   onTap: () {},
-                  leading: Icon(
+                  leading: const Icon(
                     Icons.person,
                     color: Colors.deepPurple,
                     size: 30,
                   ),
-                  title: Text(
-                    "Popular People",
+                  title: const Text(
+                    'Popular People',
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -178,16 +176,16 @@ class _HomePageState extends State<HomePage>
                     ),
                   ),
                 ),
-                DrawerDivider(),
+                const DrawerDivider(),
                 ListTile(
                   onTap: () {},
-                  leading: Icon(
+                  leading: const Icon(
                     Icons.alarm,
                     color: Colors.deepPurple,
                     size: 30,
                   ),
-                  title: Text(
-                    "Reminders",
+                  title: const Text(
+                    'Reminders',
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -195,16 +193,16 @@ class _HomePageState extends State<HomePage>
                     ),
                   ),
                 ),
-                DrawerDivider(),
+                const DrawerDivider(),
                 ListTile(
                   onTap: () {},
-                  leading: Icon(
+                  leading: const Icon(
                     Icons.help,
                     color: Colors.deepPurple,
                     size: 30,
                   ),
-                  title: Text(
-                    "Contact Developer",
+                  title: const Text(
+                    'Contact Developer',
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -214,13 +212,13 @@ class _HomePageState extends State<HomePage>
                 ),
                 ListTile(
                   onTap: () {},
-                  leading: Icon(
+                  leading: const Icon(
                     Icons.help,
                     color: Colors.deepPurple,
                     size: 30,
                   ),
-                  title: Text(
-                    "Google+ Community",
+                  title: const Text(
+                    'Google+ Community',
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -230,13 +228,13 @@ class _HomePageState extends State<HomePage>
                 ),
                 ListTile(
                   onTap: () {},
-                  leading: Icon(
+                  leading: const Icon(
                     Icons.lock_open,
                     color: Colors.deepPurple,
                     size: 30,
                   ),
-                  title: Text(
-                    "Unlock Pro",
+                  title: const Text(
+                    'Unlock Pro',
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -246,13 +244,13 @@ class _HomePageState extends State<HomePage>
                 ),
                 ListTile(
                   onTap: () {},
-                  leading: Icon(
+                  leading: const Icon(
                     Icons.settings,
                     color: Colors.deepPurple,
                     size: 30,
                   ),
-                  title: Text(
-                    "Settings",
+                  title: const Text(
+                    'Settings',
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -271,42 +269,45 @@ class _HomePageState extends State<HomePage>
         ),
         body: TabBarView(
           controller: _controller,
-          children: [
-            Container(
-              child: FutureBuilder<MovieResults>(
-                future: fetchPopularMovies(http.Client()),
-                builder: (context, snapshot) {
-                  if (snapshot.hasError) print(snapshot.error);
+          children: <Widget>[
+            FutureBuilder<MovieResults>(
+              future: fetchPopularMovies(http.Client()),
+              builder:
+                  (BuildContext context, AsyncSnapshot<MovieResults> snapshot) {
+                if (snapshot.hasError) {
+                  print(snapshot.error);
+                }
 
-                  return snapshot.hasData
-                      ? MoviesList(movies: snapshot.data.results.toList())
-                      : Center(child: CircularProgressIndicator());
-                },
-              ),
+                return snapshot.hasData
+                    ? MoviesList(movies: snapshot.data.results.toList())
+                    : const Center(child: CircularProgressIndicator());
+              },
             ),
-            Container(
-              child: FutureBuilder<MovieResults>(
-                future: fetchTopRatedMovies(http.Client()),
-                builder: (context, snapshot) {
-                  if (snapshot.hasError) print(snapshot.error);
+            FutureBuilder<MovieResults>(
+              future: fetchTopRatedMovies(http.Client()),
+              builder:
+                  (BuildContext context, AsyncSnapshot<MovieResults> snapshot) {
+                if (snapshot.hasError) {
+                  print(snapshot.error);
+                }
 
-                  return snapshot.hasData
-                      ? MoviesList(movies: snapshot.data.results.toList())
-                      : Center(child: CircularProgressIndicator());
-                },
-              ),
+                return snapshot.hasData
+                    ? MoviesList(movies: snapshot.data.results.toList())
+                    : const Center(child: CircularProgressIndicator());
+              },
             ),
-            Container(
-              child: FutureBuilder<MovieResults>(
-                future: fetchUpcomingMovies(http.Client()),
-                builder: (context, snapshot) {
-                  if (snapshot.hasError) print(snapshot.error);
+            FutureBuilder<MovieResults>(
+              future: fetchUpcomingMovies(http.Client()),
+              builder:
+                  (BuildContext context, AsyncSnapshot<MovieResults> snapshot) {
+                if (snapshot.hasError) {
+                  print(snapshot.error);
+                }
 
-                  return snapshot.hasData
-                      ? MoviesList(movies: snapshot.data.results.toList())
-                      : Center(child: CircularProgressIndicator());
-                },
-              ),
+                return snapshot.hasData
+                    ? MoviesList(movies: snapshot.data.results.toList())
+                    : const Center(child: CircularProgressIndicator());
+              },
             ),
           ],
         ),
@@ -322,7 +323,7 @@ class DrawerDivider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Divider(
+    return const Divider(
       height: 4,
       thickness: 2,
       color: Colors.grey,
@@ -331,32 +332,32 @@ class DrawerDivider extends StatelessWidget {
 }
 
 class MoviesList extends StatelessWidget {
-  final List<Movie> movies;
+  const MoviesList({Key key, this.movies}) : super(key: key);
 
-  MoviesList({Key key, this.movies}) : super(key: key);
+  final List<Movie> movies;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Color.fromRGBO(49, 49, 61, 0.7),
+      color: const Color.fromRGBO(49, 49, 61, 0.7),
       child: GridView.builder(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 3,
           childAspectRatio: 0.5,
           //mainAxisSpacing: 10.0,
           //crossAxisSpacing: 10.0,
         ),
         itemCount: movies.length,
-        itemBuilder: (context, index) {
+        itemBuilder: (BuildContext context, int index) {
           return Container(
             //color: Color.fromRGBO(49, 49, 61, 0.7),
-            padding: EdgeInsets.all(10.0),
+            padding: const EdgeInsets.all(10.0),
             child: InkWell(
               onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute<void>(
-                    builder: (context) => MovieDetailsPage(
+                    builder: (BuildContext context) => MovieDetailsPage(
                       currentMovie: movies[index],
                       index: index,
                     ),
@@ -364,7 +365,7 @@ class MoviesList extends StatelessWidget {
                 );
               },
               child: Column(
-                children: [
+                children: <Widget>[
                   Hero(
                     tag: 'poster$index',
                     child: Image.network(
@@ -372,12 +373,12 @@ class MoviesList extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    padding: EdgeInsets.all(10.0),
+                    padding: const EdgeInsets.all(10.0),
                     child: Text(
                       movies[index].originalTitle.toString(),
                       //softWrap: false,
                       maxLines: 3,
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.white,
                       ),
                     ),
