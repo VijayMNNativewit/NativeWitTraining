@@ -19,7 +19,7 @@ String genreList =
 Map<int, String> genre = {};
 MovieGenreResults genreParsed;
 
-genreMapGenerator() async {
+void genreMapGenerator() async {
   //MovieGenreResults genreParsed = await fetchMovieGenre();
   genreParsed = await fetchMovieGenre();
   //print(genreParsed.results[0].name);
@@ -94,12 +94,12 @@ Future<TvCreditsResults> fetchTvCredits(int id) async {
 }
 
 MovieResults parseMovies(String responseBody) {
-  final parsed = jsonDecode(responseBody);
+  final parsed = jsonDecode(responseBody) as Map<String, dynamic>;
   return MovieResults.fromJson(parsed);
 }
 
 MovieGenreResults parseGenre(String responseBody) {
-  final parsed = jsonDecode(responseBody);
+  final parsed = jsonDecode(responseBody) as Map<String, dynamic>;
   //print("Decoded Json = $parsed");
   final output = MovieGenreResults.fromJson(parsed);
   //print(output);
@@ -108,22 +108,22 @@ MovieGenreResults parseGenre(String responseBody) {
 }
 
 MovieCastResults parseCast(String responseBody) {
-  final parsed = jsonDecode(responseBody);
+  final parsed = jsonDecode(responseBody) as Map<String, dynamic>;
   return MovieCastResults.fromJson(parsed);
 }
 
 MovieDetails parseMovieDetails(String responseBody) {
-  final parsed = jsonDecode(responseBody);
+  final parsed = jsonDecode(responseBody) as Map<String, dynamic>;
   return MovieDetails.fromJson(parsed);
 }
 
 MovieCreditsResults parseMovieCredits(String responseBody) {
-  final parsed = jsonDecode(responseBody);
+  final parsed = jsonDecode(responseBody) as Map<String, dynamic>;
   return MovieCreditsResults.fromJson(parsed);
 }
 
 TvCreditsResults parseTvCredits(String responseBody) {
-  final parsed = jsonDecode(responseBody);
+  final parsed = jsonDecode(responseBody) as Map<String, dynamic>;
   return TvCreditsResults.fromJson(parsed);
 }
 

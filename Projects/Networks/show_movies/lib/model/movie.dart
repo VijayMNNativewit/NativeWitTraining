@@ -68,7 +68,7 @@ abstract class Movie implements Built<Movie, MovieBuilder> {
 
   Movie._();
 
-  factory Movie([updates(MovieBuilder b)]) = _$Movie;
+  factory Movie([void updates(MovieBuilder b)]) = _$Movie;
 
   Map<String, dynamic> toJson() {
     return serializers.serializeWith(Movie.serializer, this)
@@ -100,7 +100,7 @@ abstract class MovieResults
 
   MovieResults._();
 
-  factory MovieResults([updates(MovieResultsBuilder b)]) = _$MovieResults;
+  factory MovieResults([void updates(MovieResultsBuilder b)]) = _$MovieResults;
 
   Map<String, dynamic> toJson() {
     return serializers.serializeWith(MovieResults.serializer, this)
@@ -125,7 +125,7 @@ abstract class MovieGenre implements Built<MovieGenre, MovieGenreBuilder> {
 
   MovieGenre._();
 
-  factory MovieGenre([updates(MovieGenreBuilder b)]) = _$MovieGenre;
+  factory MovieGenre([void updates(MovieGenreBuilder b)]) = _$MovieGenre;
 
   Map<String, dynamic> toJson() {
     return serializers.serializeWith(MovieGenre.serializer, this)
@@ -147,7 +147,7 @@ abstract class MovieGenreResults
 
   MovieGenreResults._();
 
-  factory MovieGenreResults([updates(MovieGenreResultsBuilder b)]) =
+  factory MovieGenreResults([void updates(MovieGenreResultsBuilder b)]) =
       _$MovieGenreResults;
 
   Map<String, dynamic> toJson() {
@@ -215,7 +215,7 @@ abstract class MovieCast implements Built<MovieCast, MovieCastBuilder> {
 
   MovieCast._();
 
-  factory MovieCast([updates(MovieCastBuilder b)]) = _$MovieCast;
+  factory MovieCast([void updates(MovieCastBuilder b)]) = _$MovieCast;
 
   Map<String, dynamic> toJson() {
     return serializers.serializeWith(MovieCast.serializer, this)
@@ -241,7 +241,7 @@ abstract class MovieCastResults
 
   MovieCastResults._();
 
-  factory MovieCastResults([updates(MovieCastResultsBuilder b)]) =
+  factory MovieCastResults([void updates(MovieCastResultsBuilder b)]) =
       _$MovieCastResults;
 
   Map<String, dynamic> toJson() {
@@ -297,7 +297,7 @@ abstract class MovieDetails
 
   MovieDetails._();
 
-  factory MovieDetails([updates(MovieDetailsBuilder b)]) = _$MovieDetails;
+  factory MovieDetails([void updates(MovieDetailsBuilder b)]) = _$MovieDetails;
 
   Map<String, dynamic> toJson() {
     return serializers.serializeWith(MovieDetails.serializer, this)
@@ -379,7 +379,7 @@ abstract class MovieCredits
 
   MovieCredits._();
 
-  factory MovieCredits([updates(MovieCreditsBuilder b)]) = _$MovieCredits;
+  factory MovieCredits([void updates(MovieCreditsBuilder b)]) = _$MovieCredits;
 
   Map<String, dynamic> toJson() {
     return serializers.serializeWith(MovieCredits.serializer, this)
@@ -460,7 +460,7 @@ abstract class TvCredits implements Built<TvCredits, TvCreditsBuilder> {
 
   TvCredits._();
 
-  factory TvCredits([updates(TvCreditsBuilder b)]) = _$TvCredits;
+  factory TvCredits([void updates(TvCreditsBuilder b)]) = _$TvCredits;
 
   Map<String, dynamic> toJson() {
     return serializers.serializeWith(TvCredits.serializer, this)
@@ -486,7 +486,7 @@ abstract class MovieCreditsResults
 
   MovieCreditsResults._();
 
-  factory MovieCreditsResults([updates(MovieCreditsResultsBuilder b)]) =
+  factory MovieCreditsResults([void updates(MovieCreditsResultsBuilder b)]) =
       _$MovieCreditsResults;
 
   Map<String, dynamic> toJson() {
@@ -515,7 +515,7 @@ abstract class TvCreditsResults
 
   TvCreditsResults._();
 
-  factory TvCreditsResults([updates(TvCreditsResultsBuilder b)]) =
+  factory TvCreditsResults([void updates(TvCreditsResultsBuilder b)]) =
       _$TvCreditsResults;
 
   Map<String, dynamic> toJson() {

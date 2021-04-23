@@ -43,6 +43,7 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
         RectangularBox(
           content: currentGenre.name,
           color: Colors.grey,
+          size: 10.0,
         ),
       );
     }
@@ -86,7 +87,7 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
             child: InkWell(
               onTap: () {
                 //var valuesDropDown =
-                return showModalBottomSheet(
+                return showModalBottomSheet<void>(
                   context: context,
                   builder: (BuildContext context) {
                     return TicketFareDetails(
@@ -145,7 +146,7 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                             //color: Colors.green,
                           ),
                           Container(
-                            width: MediaQuery.of(context).size.width * 0.8,
+                            width: MediaQuery.of(context).size.width * 0.9,
                             height: MediaQuery.of(context).size.height * 0.16,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -174,8 +175,12 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                                     color: Colors.white,
                                   ),
                                 ),
-                                Row(
-                                  children: genreGenerate(),
+                                Container(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.9,
+                                  child: Row(
+                                    children: genreGenerate(),
+                                  ),
                                 ),
                               ],
                             ),
@@ -406,10 +411,12 @@ class RectangularBox extends StatelessWidget {
     Key key,
     this.content,
     this.color,
+    this.size = 15.0,
   }) : super(key: key);
 
   final String content;
   final Color color;
+  final double size;
 
   @override
   Widget build(BuildContext context) {
@@ -426,6 +433,7 @@ class RectangularBox extends StatelessWidget {
         content,
         style: TextStyle(
           color: Colors.white,
+          fontSize: size,
         ),
       ),
     );
@@ -448,7 +456,7 @@ class MovieCastList extends StatelessWidget {
             InkWell(
               onTap: () {
                 Navigator.of(context).push(
-                  MaterialPageRoute(
+                  MaterialPageRoute<void>(
                     builder: (context) => CastDetailsPageSliver(
                       id: iter.id,
                       profilePath: iter.profilePath,
@@ -585,7 +593,7 @@ class MovieDetailsDisplay extends StatelessWidget {
     return requiredFormat.toString();
   }
 
-  _launchURL(String url) async {
+  Future _launchURL(String url) async {
     if (await canLaunch(url)) {
       await launch(
         url,
@@ -612,7 +620,10 @@ class MovieDetailsDisplay extends StatelessWidget {
 
     return Text(
       genreResult,
-      style: TextStyle(color: Colors.white),
+      style: TextStyle(
+        color: Colors.white,
+        fontSize: 10.0,
+      ),
     );
   }
 
@@ -891,7 +902,7 @@ class _TicketFareDetailsState extends State<TicketFareDetails> {
                 Navigator.of(context).pop();
                 //print("pressed");
                 Navigator.of(context).push(
-                  MaterialPageRoute(
+                  MaterialPageRoute<void>(
                     builder: (context) => BookTicketsPage(
                       seatCounts: int.parse(selectedItem),
                       movieTitle: widget.movieTitle,

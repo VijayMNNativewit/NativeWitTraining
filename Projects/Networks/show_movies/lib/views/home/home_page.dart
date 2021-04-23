@@ -112,6 +112,7 @@ class _HomePageState extends State<HomePage>
                       ],
                     ),
                   ),
+                  child: null,
                 ),
                 ListTile(
                   onTap: () {},
@@ -354,7 +355,7 @@ class MoviesList extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
+                  MaterialPageRoute<void>(
                     builder: (context) => MovieDetailsPage(
                       currentMovie: movies[index],
                       index: index,

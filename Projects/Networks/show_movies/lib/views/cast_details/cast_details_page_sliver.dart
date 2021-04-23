@@ -229,7 +229,7 @@ class MovieCreditsDisplay extends StatelessWidget {
       genreResult,
       style: TextStyle(
         color: Colors.white,
-        fontSize: 15,
+        fontSize: 10.0,
         fontWeight: FontWeight.bold,
       ),
     );
@@ -307,7 +307,11 @@ class MovieCreditsDisplay extends StatelessWidget {
                           ),
                           Row(
                             children: [
-                              genreGenerate(movieCredits[index].genre.toList()),
+                              Container(
+                                child: genreGenerate(
+                                  movieCredits[index].genre.toList(),
+                                ),
+                              ),
                               /* Text(
                                 movieCredits[index].genre.toString(),
                                 style: TextStyle(
@@ -375,7 +379,7 @@ class TvCreditsDisplay extends StatelessWidget {
       genreResult,
       style: TextStyle(
         color: Colors.white,
-        fontSize: 15,
+        fontSize: 10,
         fontWeight: FontWeight.bold,
       ),
     );
@@ -453,7 +457,11 @@ class TvCreditsDisplay extends StatelessWidget {
                           ),
                           Row(
                             children: [
-                              genreGenerate(tvCredits[index].genreIds.toList()),
+                              Container(
+                                child: genreGenerate(
+                                  tvCredits[index].genreIds.toList(),
+                                ),
+                              ),
                               // Text(
                               //   tvCredits[index].genreIds.toString(),
                               //   style: TextStyle(
