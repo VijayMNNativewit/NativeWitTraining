@@ -33,12 +33,15 @@ class MovieDetailsPage extends StatefulWidget {
 }
 
 class _MovieDetailsPageState extends State<MovieDetailsPage> {
+  final List<MovieGenre> genreLists = genreParsed.results.toList();
   List<RectangularBox> genreGenerate() {
     List<RectangularBox> results = [];
     for (var iter in widget.currentMovie.genreIds) {
+      MovieGenre currentGenre =
+          genreLists.firstWhere((element) => element.id == iter);
       results.add(
         RectangularBox(
-          content: iter.toString(),
+          content: currentGenre.name,
           color: Colors.grey,
         ),
       );
@@ -594,6 +597,25 @@ class MovieDetailsDisplay extends StatelessWidget {
     }
   }
 
+  Widget genreGenerateAboutSection(List<MovieGenre> type) {
+    String genreResult = "";
+    int length = type.length - 1;
+    int counter = 0;
+    for (var iter in type) {
+      if (counter < length) {
+        genreResult = genreResult + iter.name.toString() + ", ";
+        counter++;
+      } else {
+        genreResult = genreResult + iter.name.toString();
+      }
+    }
+
+    return Text(
+      genreResult,
+      style: TextStyle(color: Colors.white),
+    );
+  }
+
   MovieDetailsDisplay({Key key, this.movieDetails}) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -674,10 +696,12 @@ class MovieDetailsDisplay extends StatelessWidget {
                 style: TextStyle(color: Colors.white),
               ),
               Spacer(),
-              Text(
-                "Genre",
+              genreGenerateAboutSection(movieDetails.type.toList()),
+              /* Text(
+                //"Genre",
+                movieDetails.type.toString(),
                 style: TextStyle(color: Colors.white),
-              ),
+              ),*/
               Spacer(),
               Text(
                 //movieDetails.premiere,

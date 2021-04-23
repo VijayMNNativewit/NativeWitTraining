@@ -17,10 +17,12 @@ String upcomingMovies =
 String genreList =
     "https://api.themoviedb.org/3/genre/movie/list?api_key=2a95a8623828ece97f84bbcdf783f5f6&language=en-US";
 Map<int, String> genre = {};
+MovieGenreResults genreParsed;
 
 genreMapGenerator() async {
-  MovieGenreResults genreParsed = await fetchMovieGenre();
-  print(genreParsed.results[0].name);
+  //MovieGenreResults genreParsed = await fetchMovieGenre();
+  genreParsed = await fetchMovieGenre();
+  //print(genreParsed.results[0].name);
 }
 
 Future<MovieGenreResults> fetchMovieGenre() async {
@@ -98,9 +100,9 @@ MovieResults parseMovies(String responseBody) {
 
 MovieGenreResults parseGenre(String responseBody) {
   final parsed = jsonDecode(responseBody);
-  print("Decoded Json = $parsed");
+  //print("Decoded Json = $parsed");
   final output = MovieGenreResults.fromJson(parsed);
-  print(output);
+  //print(output);
   //return MovieGenreResults.fromJson(parsed);
   return output;
 }

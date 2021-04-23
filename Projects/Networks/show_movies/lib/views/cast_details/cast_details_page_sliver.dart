@@ -207,6 +207,34 @@ class MovieCreditsDisplay extends StatelessWidget {
 
   MovieCreditsDisplay({Key key, this.movieCredits}) : super(key: key);
 
+  final List<MovieGenre> genreLists = genreParsed.results.toList();
+
+  Widget genreGenerate(List<int> genreIds) {
+    String genreResult = "";
+    int length = genreIds.length - 1;
+    int counter = 0;
+    for (var iter in genreIds) {
+      MovieGenre currentGenre =
+          genreLists.firstWhere((element) => element.id == iter);
+
+      if (counter < length) {
+        genreResult = genreResult + currentGenre.name.toString() + ", ";
+        counter++;
+      } else {
+        genreResult = genreResult + currentGenre.name.toString();
+      }
+    }
+
+    return Text(
+      genreResult,
+      style: TextStyle(
+        color: Colors.white,
+        fontSize: 15,
+        fontWeight: FontWeight.bold,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     // print(movieCredits);
@@ -279,14 +307,15 @@ class MovieCreditsDisplay extends StatelessWidget {
                           ),
                           Row(
                             children: [
-                              Text(
+                              genreGenerate(movieCredits[index].genre.toList()),
+                              /* Text(
                                 movieCredits[index].genre.toString(),
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold,
                                 ),
-                              ),
+                              ),*/
                               Spacer(),
                               Text(
                                 movieCredits[index].releaseDate.substring(0, 4),
@@ -323,6 +352,34 @@ class TvCreditsDisplay extends StatelessWidget {
   final List<TvCredits> tvCredits;
 
   TvCreditsDisplay({Key key, this.tvCredits}) : super(key: key);
+
+  final List<MovieGenre> genreLists = genreParsed.results.toList();
+
+  Widget genreGenerate(List<int> genreIds) {
+    String genreResult = "";
+    int length = genreIds.length - 1;
+    int counter = 0;
+    for (var iter in genreIds) {
+      MovieGenre currentGenre =
+          genreLists.firstWhere((element) => element.id == iter);
+
+      if (counter < length) {
+        genreResult = genreResult + currentGenre.name.toString() + ", ";
+        counter++;
+      } else {
+        genreResult = genreResult + currentGenre.name.toString();
+      }
+    }
+
+    return Text(
+      genreResult,
+      style: TextStyle(
+        color: Colors.white,
+        fontSize: 15,
+        fontWeight: FontWeight.bold,
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -396,14 +453,15 @@ class TvCreditsDisplay extends StatelessWidget {
                           ),
                           Row(
                             children: [
-                              Text(
-                                tvCredits[index].genreIds.toString(),
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
+                              genreGenerate(tvCredits[index].genreIds.toList()),
+                              // Text(
+                              //   tvCredits[index].genreIds.toString(),
+                              //   style: TextStyle(
+                              //     color: Colors.white,
+                              //     fontSize: 15,
+                              //     fontWeight: FontWeight.bold,
+                              //   ),
+                              // ),
                               Spacer(),
                               Text(
                                 tvCredits[index].firstAirDate.substring(0, 4),
