@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
-import 'package:show_movies/views/home/home_page.dart';
+import 'package:show_movies/utils/custom_widgets.dart';
 
 class BookTicketsPage extends StatefulWidget {
   const BookTicketsPage({
@@ -81,13 +81,11 @@ class _BookTicketsPageState extends State<BookTicketsPage> {
         actions: <Widget>[
           Container(
             padding: const EdgeInsets.all(
-              15.0,
+              14.0,
             ),
             child: Text(
               '${widget.seatCounts} Tickets',
-              style: const TextStyle(
-                fontSize: 15.0,
-              ),
+              style: Theme.of(context).textTheme.subtitle2,
             ),
           ),
         ],
@@ -98,12 +96,9 @@ class _BookTicketsPageState extends State<BookTicketsPage> {
             padding: const EdgeInsets.all(
               20.0,
             ),
-            child: const Text(
+            child: Text(
               'Screen',
-              style: TextStyle(
-                fontSize: 18.0,
-                color: Colors.white,
-              ),
+              style: Theme.of(context).textTheme.subtitle1,
             ),
           ),
           const DrawerDivider(),
@@ -119,12 +114,7 @@ class _BookTicketsPageState extends State<BookTicketsPage> {
               itemBuilder: (BuildContext context, int index) {
                 return InkWell(
                   onTap: () {
-                    //print("pressed");
                     setState(() {
-                      // seatColor[index] = Colors.green;
-                      /* seatColor[index] == Colors.blueGrey
-                            ? seatColor[index] = Colors.green
-                            : seatColor[index] = Colors.blueGrey; */
                       if (selectedSeatCounts < seatCounts &&
                           seatColor[index] == Colors.blueGrey) {
                         seatColor[index] = Colors.green;
@@ -141,7 +131,7 @@ class _BookTicketsPageState extends State<BookTicketsPage> {
                       8.0,
                     ),
                     margin: const EdgeInsets.all(
-                      5.0,
+                      4.0,
                     ),
                     decoration: BoxDecoration(
                         color: seatColor[index],
@@ -151,7 +141,10 @@ class _BookTicketsPageState extends State<BookTicketsPage> {
                         )),
                     child: Center(
                       child: Column(children: <Widget>[
-                        const Icon(Icons.event_seat),
+                        Icon(
+                          Icons.event_seat,
+                          size: Theme.of(context).accentIconTheme.size,
+                        ),
                         Text(
                           seats[index],
                           style: const TextStyle(color: Colors.white),
@@ -181,11 +174,9 @@ class _BookTicketsPageState extends State<BookTicketsPage> {
                   ),
                 );
               },
-              child: const Text(
+              child: Text(
                 'BOOK',
-                style: TextStyle(
-                  fontSize: 20.0,
-                ),
+                style: Theme.of(context).textTheme.subtitle1,
               ),
             ),
           ),

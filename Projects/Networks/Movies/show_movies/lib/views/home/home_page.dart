@@ -4,6 +4,8 @@ import 'package:flutter/foundation.dart';
 import 'package:show_movies/model/movie.dart';
 import 'package:show_movies/network/network_service.dart';
 import 'package:show_movies/views/movie_details/movie_details_page.dart';
+import 'package:show_movies/utils/custom_widgets.dart';
+import 'package:built_collection/built_collection.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key key}) : super(key: key);
@@ -11,17 +13,17 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage>
-    with SingleTickerProviderStateMixin {
+class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   //final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   TabController _controller;
+
   //int _selectedIndex = 0;
 
   @override
   void initState() {
     super.initState();
     _controller = TabController(length: 3, vsync: this);
-    genreMapGenerator();
+    Singleton().genreMapGenerator();
     _controller.addListener(() {
       setState(() {
         //  _selectedIndex = _controller.index;
@@ -41,9 +43,9 @@ class _HomePageState extends State<HomePage>
           ),*/
           leading: Builder(builder: (BuildContext context) {
             return IconButton(
-              icon: const Icon(
+              icon: Icon(
                 Icons.menu,
-                size: 30.0,
+                size: Theme.of(context).primaryIconTheme.size,
               ),
               onPressed: () => Scaffold.of(context).openDrawer(),
             );
@@ -54,12 +56,9 @@ class _HomePageState extends State<HomePage>
             ),
             child: Row(
               children: <Widget>[
-                const Text(
+                Text(
                   'Book Movie',
-                  style: TextStyle(
-                    fontSize: 25.0,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: Theme.of(context).textTheme.headline1,
                 ),
                 Container(),
               ],
@@ -70,9 +69,9 @@ class _HomePageState extends State<HomePage>
               padding: const EdgeInsets.all(
                 10.0,
               ),
-              child: const Icon(
+              child: Icon(
                 Icons.search,
-                size: 30.0,
+                size: Theme.of(context).primaryIconTheme.size,
               ),
             ),
           ],
@@ -93,185 +92,12 @@ class _HomePageState extends State<HomePage>
           backgroundColor: Colors.black,
           foregroundColor: Colors.white,
         ),
-        drawer: Drawer(
-          elevation: 16.0,
-          child: Container(
-            color: const Color.fromRGBO(49, 49, 61, 0.7),
-            child: ListView(
-              children: <Widget>[
-                const DrawerHeader(
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.centerLeft,
-                      end: Alignment.centerRight,
-                      colors: <Color>[
-                        Colors.blue,
-                        Colors.deepPurpleAccent,
-                      ],
-                    ),
-                  ),
-                  child: null,
-                ),
-                ListTile(
-                  onTap: () {},
-                  leading: const Icon(
-                    Icons.movie,
-                    color: Colors.deepPurple,
-                    size: 30,
-                  ),
-                  title: const Text(
-                    'Movies',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
-                  ),
-                ),
-                ListTile(
-                  onTap: () {},
-                  leading: const Icon(
-                    Icons.live_tv,
-                    color: Colors.deepPurple,
-                    size: 30,
-                  ),
-                  title: const Text(
-                    'TV Shows',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
-                  ),
-                ),
-                ListTile(
-                  onTap: () {},
-                  leading: const Icon(
-                    Icons.event_seat,
-                    color: Colors.deepPurple,
-                    size: 30,
-                  ),
-                  title: const Text(
-                    'Discover',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
-                  ),
-                ),
-                ListTile(
-                  onTap: () {},
-                  leading: const Icon(
-                    Icons.person,
-                    color: Colors.deepPurple,
-                    size: 30,
-                  ),
-                  title: const Text(
-                    'Popular People',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
-                  ),
-                ),
-                const DrawerDivider(),
-                ListTile(
-                  onTap: () {},
-                  leading: const Icon(
-                    Icons.alarm,
-                    color: Colors.deepPurple,
-                    size: 30,
-                  ),
-                  title: const Text(
-                    'Reminders',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
-                  ),
-                ),
-                const DrawerDivider(),
-                ListTile(
-                  onTap: () {},
-                  leading: const Icon(
-                    Icons.help,
-                    color: Colors.deepPurple,
-                    size: 30,
-                  ),
-                  title: const Text(
-                    'Contact Developer',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
-                  ),
-                ),
-                ListTile(
-                  onTap: () {},
-                  leading: const Icon(
-                    Icons.help,
-                    color: Colors.deepPurple,
-                    size: 30,
-                  ),
-                  title: const Text(
-                    'Google+ Community',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
-                  ),
-                ),
-                ListTile(
-                  onTap: () {},
-                  leading: const Icon(
-                    Icons.lock_open,
-                    color: Colors.deepPurple,
-                    size: 30,
-                  ),
-                  title: const Text(
-                    'Unlock Pro',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
-                  ),
-                ),
-                ListTile(
-                  onTap: () {},
-                  leading: const Icon(
-                    Icons.settings,
-                    color: Colors.deepPurple,
-                    size: 30,
-                  ),
-                  title: const Text(
-                    'Settings',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
-                  ),
-                ),
-              ].map((Widget child) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 5),
-                  child: child,
-                );
-              }).toList(),
-            ),
-          ),
-        ),
+        drawer: const DrawerWidget(),
         body: TabBarView(
           controller: _controller,
           children: <Widget>[
             FutureBuilder<MovieResults>(
-              future: fetchPopularMovies(http.Client()),
+              future: NetworkApiRoutes.fetchPopularMovies(http.Client()),
               builder:
                   (BuildContext context, AsyncSnapshot<MovieResults> snapshot) {
                 if (snapshot.hasError) {
@@ -279,12 +105,14 @@ class _HomePageState extends State<HomePage>
                 }
 
                 return snapshot.hasData
-                    ? MoviesList(movies: snapshot.data.results.toList())
+                    ? MoviesList(
+                        movies: snapshot.data.results,
+                      )
                     : const Center(child: CircularProgressIndicator());
               },
             ),
             FutureBuilder<MovieResults>(
-              future: fetchTopRatedMovies(http.Client()),
+              future: NetworkApiRoutes.fetchTopRatedMovies(http.Client()),
               builder:
                   (BuildContext context, AsyncSnapshot<MovieResults> snapshot) {
                 if (snapshot.hasError) {
@@ -292,12 +120,14 @@ class _HomePageState extends State<HomePage>
                 }
 
                 return snapshot.hasData
-                    ? MoviesList(movies: snapshot.data.results.toList())
+                    ? MoviesList(
+                        movies: snapshot.data.results,
+                      )
                     : const Center(child: CircularProgressIndicator());
               },
             ),
             FutureBuilder<MovieResults>(
-              future: fetchUpcomingMovies(http.Client()),
+              future: NetworkApiRoutes.fetchUpcomingMovies(http.Client()),
               builder:
                   (BuildContext context, AsyncSnapshot<MovieResults> snapshot) {
                 if (snapshot.hasError) {
@@ -305,7 +135,9 @@ class _HomePageState extends State<HomePage>
                 }
 
                 return snapshot.hasData
-                    ? MoviesList(movies: snapshot.data.results.toList())
+                    ? MoviesList(
+                        movies: snapshot.data.results,
+                      )
                     : const Center(child: CircularProgressIndicator());
               },
             ),
@@ -316,49 +148,65 @@ class _HomePageState extends State<HomePage>
   }
 }
 
-class DrawerDivider extends StatelessWidget {
-  const DrawerDivider({
+class MoviesList extends StatefulWidget {
+  const MoviesList({
     Key key,
+    this.movies,
   }) : super(key: key);
 
+  final BuiltList<Movie> movies;
+
   @override
-  Widget build(BuildContext context) {
-    return const Divider(
-      height: 4,
-      thickness: 2,
-      color: Colors.grey,
-    );
-  }
+  _MoviesListState createState() => _MoviesListState();
 }
 
-class MoviesList extends StatelessWidget {
-  const MoviesList({Key key, this.movies}) : super(key: key);
+class _MoviesListState extends State<MoviesList>
+    with SingleTickerProviderStateMixin {
+  AnimationController _animationController;
 
-  final List<Movie> movies;
+  Animation<double> animation;
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+        duration: const Duration(milliseconds: 4000), vsync: this);
+    animation =
+        CurvedAnimation(parent: _animationController, curve: Curves.easeIn);
+    _animationController.forward();
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose(); // you need this
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: const Color.fromRGBO(49, 49, 61, 0.7),
-      child: GridView.builder(
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3,
-          childAspectRatio: 0.5,
-          //mainAxisSpacing: 10.0,
-          //crossAxisSpacing: 10.0,
-        ),
-        itemCount: movies.length,
-        itemBuilder: (BuildContext context, int index) {
-          return Container(
-            //color: Color.fromRGBO(49, 49, 61, 0.7),
-            padding: const EdgeInsets.all(10.0),
-            child: InkWell(
+      color: Colors.black87,
+      padding: const EdgeInsets.all(
+        8.0,
+      ),
+      child: FadeTransition(
+        opacity: animation,
+        child: GridView.builder(
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 3,
+            childAspectRatio: 0.5,
+            mainAxisSpacing: 8.0,
+            crossAxisSpacing: 8.0,
+          ),
+          itemCount: widget.movies.length,
+          itemBuilder: (BuildContext context, int index) {
+            return InkWell(
               onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute<void>(
                     builder: (BuildContext context) => MovieDetailsPage(
-                      currentMovie: movies[index],
+                      currentMovie: widget.movies[index],
                       index: index,
                     ),
                   ),
@@ -369,15 +217,17 @@ class MoviesList extends StatelessWidget {
                   Hero(
                     tag: 'poster$index',
                     child: Image.network(
-                      imageSource + movies[index].posterPath.toString(),
+                      NetworkApiRoutes.imageSource +
+                          widget.movies[index].posterPath.toString(),
                     ),
                   ),
                   Container(
-                    padding: const EdgeInsets.all(10.0),
+                    padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      movies[index].originalTitle.toString(),
-                      //softWrap: false,
-                      maxLines: 3,
+                      widget.movies[index].originalTitle.toString(),
+                      softWrap: true,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
                         color: Colors.white,
                       ),
@@ -385,9 +235,9 @@ class MoviesList extends StatelessWidget {
                   ),
                 ],
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }

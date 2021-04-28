@@ -77,7 +77,7 @@ class _CastDetailsPageState extends State<CastDetailsPage>
           controller: _controller,
           children: <Widget>[
             FutureBuilder<MovieCreditsResults>(
-              future: fetchMovieCredits(widget.id),
+              future: NetworkApiRoutes.fetchMovieCredits(widget.id),
               builder: (BuildContext context,
                   AsyncSnapshot<MovieCreditsResults> snapshot) {
                 if (snapshot.hasError) {
@@ -92,7 +92,7 @@ class _CastDetailsPageState extends State<CastDetailsPage>
               },
             ),
             FutureBuilder<TvCreditsResults>(
-              future: fetchTvCredits(widget.id),
+              future: NetworkApiRoutes.fetchTvCredits(widget.id),
               builder: (BuildContext context,
                   AsyncSnapshot<TvCreditsResults> snapshot) {
                 if (snapshot.hasError) {
@@ -144,7 +144,8 @@ class MovieCreditsDisplay extends StatelessWidget {
                   height: MediaQuery.of(context).size.height * 0.35,
                   width: double.infinity,
                   child: Image.network(
-                    imageSource + movieCredits[index].posterPath.toString(),
+                    NetworkApiRoutes.imageSource +
+                        movieCredits[index].posterPath.toString(),
                     fit: BoxFit.fill,
                   ),
                 ),
@@ -259,7 +260,8 @@ class TvCreditsDisplay extends StatelessWidget {
                   height: MediaQuery.of(context).size.height * 0.35,
                   width: double.infinity,
                   child: Image.network(
-                    imageSource + tvCredits[index].posterPath.toString(),
+                    NetworkApiRoutes.imageSource +
+                        tvCredits[index].posterPath.toString(),
                     fit: BoxFit.fill,
                   ),
                 ),
