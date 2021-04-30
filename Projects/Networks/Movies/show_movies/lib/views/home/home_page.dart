@@ -9,6 +9,7 @@ import 'package:built_collection/built_collection.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key key}) : super(key: key);
+
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -18,17 +19,57 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   TabController _controller;
 
   //int _selectedIndex = 0;
+  BuiltList<Movie> popularMoviesList = <Movie>[].toBuiltList();
+  BuiltList<Movie> topRatedMoviesList = <Movie>[].toBuiltList();
+  BuiltList<Movie> upcomingMoviesList = <Movie>[].toBuiltList();
+
+  int popularMoviesPage = 1, topRatedMoviesPage = 1, upcomingMoviesPage = 1;
+  bool loading = false;
+  bool topRatedLoading = false, upcomingLoading = false;
 
   @override
   void initState() {
     super.initState();
+    _future = _getFuture();
+    _topRatedFuture = _getTopRatedFuture();
+    _upcomingFuture = _getUpcomingFuture();
     _controller = TabController(length: 3, vsync: this);
+
     Singleton().genreMapGenerator();
     _controller.addListener(() {
       setState(() {
         //  _selectedIndex = _controller.index;
       });
     });
+  }
+
+  void _reloadData() {
+    if (!loading) {
+      setState(() {
+        _future = _getFuture();
+      });
+    }
+  }
+
+  void _reloadTopRatedData() {
+    if (!topRatedLoading) {
+      setState(() {
+        _topRatedFuture = _getTopRatedFuture();
+      });
+    }
+  }
+
+  void _reloadUpcomingData() {
+    if (!upcomingLoading) {
+      setState(() {
+        _upcomingFuture = _getUpcomingFuture();
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
@@ -96,55 +137,169 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         body: TabBarView(
           controller: _controller,
           children: <Widget>[
-            FutureBuilder<MovieResults>(
-              future: NetworkApiRoutes.fetchPopularMovies(http.Client()),
-              builder:
-                  (BuildContext context, AsyncSnapshot<MovieResults> snapshot) {
+            FutureBuilder<void>(
+              future: _future,
+              builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
                 if (snapshot.hasError) {
-                  print(snapshot.error);
+                  return Center(
+                    child: Text(snapshot.error?.toString() ?? ''),
+                  );
                 }
+                return NotificationListener<ScrollNotification>(
+                  onNotification: (ScrollNotification n) {
+                    if (n is ScrollEndNotification) {
+                      _reloadData();
+                    }
+                    return true;
+                  },
+                  child: Column(
+                    children: <Widget>[
+                      Expanded(
+                        child: MoviesList(
+                          movies: popularMoviesList,
+                        ),
+                      ),
+                      if (snapshot.connectionState != ConnectionState.done &&
+                          false)
+                        const CircularProgressIndicator(),
+                    ],
+                  ),
+                );
 
-                return snapshot.hasData
-                    ? MoviesList(
-                        movies: snapshot.data.results,
-                      )
-                    : const Center(child: CircularProgressIndicator());
+                // return snapshot.hasData &&
+                //         snapshot.connectionState == ConnectionState.done
+                //     ? MoviesList(
+                //         movies: snapshot.data.results,
+                //       )
+                //     : const Center(child: CircularProgressIndicator());
               },
             ),
-            FutureBuilder<MovieResults>(
-              future: NetworkApiRoutes.fetchTopRatedMovies(http.Client()),
-              builder:
-                  (BuildContext context, AsyncSnapshot<MovieResults> snapshot) {
+            FutureBuilder<void>(
+              future: _topRatedFuture,
+              builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
                 if (snapshot.hasError) {
-                  print(snapshot.error);
+                  return Center(
+                    child: Text(snapshot.error?.toString() ?? ''),
+                  );
                 }
 
-                return snapshot.hasData
-                    ? MoviesList(
-                        movies: snapshot.data.results,
-                      )
-                    : const Center(child: CircularProgressIndicator());
+                return NotificationListener<ScrollNotification>(
+                  onNotification: (ScrollNotification n) {
+                    if (n is ScrollEndNotification) {
+                      _reloadTopRatedData();
+                    }
+                    return true;
+                  },
+                  child: Column(
+                    children: <Widget>[
+                      Expanded(
+                        child: MoviesList(
+                          movies: topRatedMoviesList,
+                        ),
+                      ),
+                      if (snapshot.connectionState != ConnectionState.done &&
+                          false)
+                        const CircularProgressIndicator(),
+                    ],
+                  ),
+                );
+                // return snapshot.hasData
+                //     ? MoviesList(
+                //         movies: snapshot.data.results,
+                //       )
+                //     : const Center(child: CircularProgressIndicator());
               },
             ),
-            FutureBuilder<MovieResults>(
-              future: NetworkApiRoutes.fetchUpcomingMovies(http.Client()),
-              builder:
-                  (BuildContext context, AsyncSnapshot<MovieResults> snapshot) {
+            FutureBuilder<void>(
+              future: _upcomingFuture,
+              builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
                 if (snapshot.hasError) {
-                  print(snapshot.error);
+                  return Center(
+                    child: Text(snapshot.error?.toString() ?? ''),
+                  );
                 }
-
-                return snapshot.hasData
-                    ? MoviesList(
-                        movies: snapshot.data.results,
-                      )
-                    : const Center(child: CircularProgressIndicator());
+                return NotificationListener<ScrollNotification>(
+                  onNotification: (ScrollNotification n) {
+                    if (n is ScrollEndNotification) {
+                      _reloadUpcomingData();
+                    }
+                    return true;
+                  },
+                  child: Column(
+                    children: <Widget>[
+                      Expanded(
+                        child: MoviesList(
+                          movies: upcomingMoviesList,
+                        ),
+                      ),
+                      if (snapshot.connectionState != ConnectionState.done &&
+                          false)
+                        const CircularProgressIndicator(),
+                    ],
+                  ),
+                );
               },
             ),
           ],
         ),
       ),
     );
+  }
+
+  Future<void> _future;
+  Future<void> _topRatedFuture;
+  Future<void> _upcomingFuture;
+
+  Future<void> _getFuture() async {
+    loading = true;
+    final MovieResults r = await NetworkApiRoutes.fetchPopularMovies(
+      http.Client(),
+      popularMoviesPage,
+    );
+    popularMoviesList = popularMoviesList.rebuild((ListBuilder<Movie> b) {
+      b.addAll(r.results);
+    });
+    popularMoviesPage++;
+    if (mounted) {
+      setState(() {
+        loading = false;
+      });
+    }
+  }
+
+  Future<void> _getTopRatedFuture() async {
+    topRatedLoading = true;
+    final MovieResults r = await NetworkApiRoutes.fetchTopRatedMovies(
+      http.Client(),
+      topRatedMoviesPage,
+    );
+    topRatedMoviesList = topRatedMoviesList.rebuild((ListBuilder<Movie> b) {
+      b.addAll(r.results);
+    });
+    topRatedMoviesPage++;
+    if (mounted) {
+      setState(() {
+        topRatedLoading = false;
+      });
+    }
+  }
+
+  Future<void> _getUpcomingFuture() async {
+    upcomingLoading = true;
+    final MovieResults r = await NetworkApiRoutes.fetchUpcomingMovies(
+      http.Client(),
+      upcomingMoviesPage,
+    );
+    upcomingMoviesList = upcomingMoviesList.rebuild((ListBuilder<Movie> b) {
+      b.addAll(r.results);
+    });
+    //print(upcomingMoviesList);
+    upcomingMoviesPage++;
+    if (mounted) {
+      setState(() {
+        upcomingLoading = false;
+      });
+    }
   }
 }
 
@@ -189,55 +344,55 @@ class _MoviesListState extends State<MoviesList>
       padding: const EdgeInsets.all(
         8.0,
       ),
-      child: FadeTransition(
-        opacity: animation,
-        child: GridView.builder(
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3,
-            childAspectRatio: 0.5,
-            mainAxisSpacing: 8.0,
-            crossAxisSpacing: 8.0,
-          ),
-          itemCount: widget.movies.length,
-          itemBuilder: (BuildContext context, int index) {
-            return InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute<void>(
-                    builder: (BuildContext context) => MovieDetailsPage(
-                      currentMovie: widget.movies[index],
-                      index: index,
-                    ),
+      child: GridView.builder(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 3,
+          childAspectRatio: 0.5,
+          mainAxisSpacing: 8.0,
+          crossAxisSpacing: 8.0,
+        ),
+        itemCount: widget.movies.length,
+        itemBuilder: (BuildContext context, int index) {
+          return InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute<void>(
+                  builder: (BuildContext context) => MovieDetailsPage(
+                    currentMovie: widget.movies[index],
+                    index: index,
                   ),
-                );
-              },
-              child: Column(
-                children: <Widget>[
-                  Hero(
-                    tag: 'poster$index',
+                ),
+              );
+            },
+            child: Column(
+              children: <Widget>[
+                Hero(
+                  tag: 'poster$index',
+                  child: FadeTransition(
+                    opacity: animation,
                     child: Image.network(
                       NetworkApiRoutes.imageSource +
                           widget.movies[index].posterPath.toString(),
                     ),
                   ),
-                  Container(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      widget.movies[index].originalTitle.toString(),
-                      softWrap: true,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        color: Colors.white,
-                      ),
+                ),
+                Container(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    widget.movies[index].originalTitle.toString(),
+                    softWrap: true,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      color: Colors.white,
                     ),
                   ),
-                ],
-              ),
-            );
-          },
-        ),
+                ),
+              ],
+            ),
+          );
+        },
       ),
     );
   }

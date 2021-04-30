@@ -41,29 +41,37 @@ class NetworkApiRoutes {
   static const String imageSource = 'https://image.tmdb.org/t/p/w500';
   static const String imageSourceSlash = 'https://image.tmdb.org/t/p/w500/';
   static const String apiKey = '2a95a8623828ece97f84bbcdf783f5f6';
+  // static const String popularMovies =
+  //     'https://api.themoviedb.org/3/movie/popular?api_key=$apiKey&language=en-US&page=1';
   static const String popularMovies =
-      'https://api.themoviedb.org/3/movie/popular?api_key=$apiKey&language=en-US&page=1';
+      'https://api.themoviedb.org/3/movie/popular?api_key=$apiKey&language=en-US&page=';
   static const String topRatedMovies =
-      'https://api.themoviedb.org/3/movie/top_rated?api_key=$apiKey&language=en-US&page=1';
+      'https://api.themoviedb.org/3/movie/top_rated?api_key=$apiKey&language=en-US&page=';
   static const String upcomingMovies =
-      'https://api.themoviedb.org/3/movie/upcoming?api_key=$apiKey&language=en-US&page=1';
+      'https://api.themoviedb.org/3/movie/upcoming?api_key=$apiKey&language=en-US&page=';
   static const String genreList =
       'https://api.themoviedb.org/3/genre/movie/list?api_key=$apiKey&language=en-US';
 
-  static Future<MovieResults> fetchPopularMovies(http.Client client) async {
-    final http.Response response = await client.get(Uri.parse(popularMovies));
+  static Future<MovieResults> fetchPopularMovies(
+      http.Client client, int page) async {
+    final String currentPage = popularMovies + page.toString();
+    final http.Response response = await client.get(Uri.parse(currentPage));
 
     return parseMovies(response.body);
   }
 
-  static Future<MovieResults> fetchTopRatedMovies(http.Client client) async {
-    final http.Response response = await client.get(Uri.parse(topRatedMovies));
+  static Future<MovieResults> fetchTopRatedMovies(
+      http.Client client, int page) async {
+    final String currentPage = topRatedMovies + page.toString();
+    final http.Response response = await client.get(Uri.parse(currentPage));
 
     return parseMovies(response.body);
   }
 
-  static Future<MovieResults> fetchUpcomingMovies(http.Client client) async {
-    final http.Response response = await client.get(Uri.parse(upcomingMovies));
+  static Future<MovieResults> fetchUpcomingMovies(
+      http.Client client, int page) async {
+    final String currentPage = upcomingMovies + page.toString();
+    final http.Response response = await client.get(Uri.parse(currentPage));
 
     return parseMovies(response.body);
   }

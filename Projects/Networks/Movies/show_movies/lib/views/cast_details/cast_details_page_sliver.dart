@@ -38,129 +38,181 @@ class _CastDetailsPageSliverState extends State<CastDetailsPageSliver>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: DefaultTabController(
-          length: 2,
-          child: NestedScrollView(
-            headerSliverBuilder:
-                (BuildContext context, bool innerBoxIsScrolled) {
-              return <Widget>[
-                SliverAppBar(
-                  backgroundColor: Colors.transparent,
-                  expandedHeight: 200.0,
-                  //snap: true,
-                  floating: true,
-                  pinned: false,
-                  flexibleSpace: FlexibleSpaceBar(
-                    background: Container(
-                      child: Container(
-                        padding: const EdgeInsets.all(50.0),
-                        child: Container(
-                          width: 200,
-                          height: 200,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: DecorationImage(
-                              image: NetworkImage(
-                                NetworkApiRoutes.imageSource +
-                                    widget.profilePath,
-                                //    scale: 5.0,
-                              ),
-                              fit: BoxFit.fill,
-                            ),
-                          ),
+      // backgroundColor: Colors.grey,
+      body: DefaultTabController(
+        length: 2,
+        child: NestedScrollView(
+          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+            return <Widget>[
+              SliverAppBar(
+                backgroundColor: Colors.transparent,
+                expandedHeight: 200.0,
+                //snap: true,
+                floating: true,
+                pinned: false,
+                flexibleSpace: FlexibleSpaceBar(
+                  // collapseMode: CollapseMode.pin,
+                  background: Container(
+                    child: Container(
+                      padding: const EdgeInsets.all(50.0),
+                      // child: Container(
+                      //   width: 200,
+                      //   height: 200,
+                      //   decoration: BoxDecoration(
+                      //     shape: BoxShape.circle,
+                      //     image: DecorationImage(
+                      //       image: NetworkImage(
+                      //         NetworkApiRoutes.imageSource +
+                      //             widget.profilePath,
+                      //         //    scale: 5.0,
+                      //       ),
+                      //       fit: BoxFit.fill,
+                      //     ),
+                      //   ),
+                      // ),
+                      child: CircleAvatar(
+                        //radius: 100,
+                        child: Image.network(
+                          NetworkApiRoutes.imageSource + widget.profilePath,
+                          fit: BoxFit.fitWidth,
                         ),
-                        // child: CircleAvatar(
-                        //   radius: 100,
-                        //   child: Image.network(
-                        //     imageSource + widget.profilePath,
-                        //     fit: BoxFit.contain,
-                        //   ),
-                        //
-                        //   // backgroundImage: NetworkImage(
-                        //   //   imageSource + widget.profilePath,
-                        //   //   // scale: 100.0,
-                        //   // ),
-                        //   //backgroundColor: Colors.transparent,
+
+                        // backgroundImage: NetworkImage(
+                        //   imageSource + widget.profilePath,
+                        //   // scale: 100.0,
                         // ),
-                      ),
-                      decoration: const BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.centerLeft,
-                          end: Alignment.centerRight,
-                          colors: <Color>[
-                            Colors.blue,
-                            Colors.deepPurpleAccent,
-                          ],
-                        ),
+                        //backgroundColor: Colors.transparent,
                       ),
                     ),
-                    centerTitle: true,
-                    title: Text(
-                      widget.name,
-                      style: Theme.of(context).textTheme.subtitle2,
+                    decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.centerLeft,
+                        end: Alignment.centerRight,
+                        colors: <Color>[
+                          Colors.blue,
+                          Colors.deepPurpleAccent,
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                SliverPersistentHeader(
-                  delegate: _SliverAppBarDelegate(
-                    TabBar(
-                      labelColor: Colors.white,
-                      indicatorColor: Colors.greenAccent,
-                      controller: _controller,
-                      tabs: <Widget>[
-                        Tab(
-                          icon: Icon(
-                            Icons.movie,
-                            size: Theme.of(context).accentIconTheme.size,
-                          ),
-                        ),
-                        Tab(
-                          icon: Icon(
-                            Icons.tv,
-                            size: Theme.of(context).accentIconTheme.size,
-                          ),
-                        ),
-                      ],
-                    ),
+                  centerTitle: true,
+                  title: Text(
+                    widget.name,
+                    style: Theme.of(context).textTheme.subtitle2,
                   ),
-                  pinned: true,
                 ),
-              ];
-            },
-            body: TabBarView(
-              controller: _controller,
-              children: <Widget>[
-                FutureBuilder<MovieCreditsResults>(
-                  future: NetworkApiRoutes.fetchMovieCredits(widget.id),
-                  builder: (BuildContext context,
-                      AsyncSnapshot<MovieCreditsResults> snapshot) {
-                    if (snapshot.hasError) {
-                      print(snapshot.error);
-                    }
-
-                    return snapshot.hasData
-                        ? MovieCreditsDisplay(
-                            movieCredits: snapshot.data.movieCreditsResults)
-                        : const Center(child: CircularProgressIndicator());
-                  },
+              ),
+            ];
+          },
+          body: Column(
+            children: <Widget>[
+              Container(
+                height: MediaQuery.of(context).padding.top,
+                width: double.infinity,
+                // child: Text('  '),
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                    colors: <Color>[
+                      Colors.blue,
+                      Colors.deepPurpleAccent,
+                    ],
+                  ),
                 ),
-                FutureBuilder<TvCreditsResults>(
-                  future: NetworkApiRoutes.fetchTvCredits(widget.id),
-                  builder: (BuildContext context,
-                      AsyncSnapshot<TvCreditsResults> snapshot) {
-                    if (snapshot.hasError) {
-                      print(snapshot.error);
-                    }
-
-                    return snapshot.hasData
-                        ? TvCreditsDisplay(
-                            tvCredits: snapshot.data.tvCreditsResults)
-                        : const Center(child: CircularProgressIndicator());
-                  },
+              ),
+              Container(
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                    colors: <Color>[
+                      Colors.blue,
+                      Colors.deepPurpleAccent,
+                    ],
+                  ),
                 ),
-              ],
-            ),
+                child: TabBar(
+                  labelColor: Colors.white,
+                  indicatorColor: Colors.greenAccent,
+                  controller: _controller,
+                  tabs: <Widget>[
+                    Tab(
+                      icon: Icon(
+                        Icons.movie,
+                        size: Theme.of(context).accentIconTheme.size,
+                      ),
+                    ),
+                    Tab(
+                      icon: Icon(
+                        Icons.tv,
+                        size: Theme.of(context).accentIconTheme.size,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: TabBarView(
+                  controller: _controller,
+                  children: <Widget>[
+                    FutureBuilder<MovieCreditsResults>(
+                      future: NetworkApiRoutes.fetchMovieCredits(widget.id),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<MovieCreditsResults> snapshot) {
+                        if (snapshot.hasError) {
+                          print(snapshot.error);
+                        }
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        } else if (snapshot.connectionState ==
+                            ConnectionState.done) {
+                          if (snapshot.hasData) {
+                            return MovieCreditsDisplay(
+                                movieCredits:
+                                    snapshot.data.movieCreditsResults);
+                          } else {
+                            return const Center(
+                                child: CircularProgressIndicator());
+                          }
+                        } else {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        }
+                      },
+                    ),
+                    FutureBuilder<TvCreditsResults>(
+                      future: NetworkApiRoutes.fetchTvCredits(widget.id),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<TvCreditsResults> snapshot) {
+                        if (snapshot.hasError) {
+                          print(snapshot.error);
+                        }
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        } else if (snapshot.connectionState ==
+                            ConnectionState.done) {
+                          if (snapshot.hasData) {
+                            return TvCreditsDisplay(
+                                tvCredits: snapshot.data.tvCreditsResults);
+                          } else {
+                            return const Center(
+                                child: CircularProgressIndicator());
+                          }
+                        } else {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        }
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
         ),
       ),

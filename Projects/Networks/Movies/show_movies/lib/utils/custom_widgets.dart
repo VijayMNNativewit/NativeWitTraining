@@ -141,6 +141,7 @@ class GenreChipsGenerate extends StatelessWidget {
   final BuiltList<MovieGenre> genreLists;
 
   List<Widget> genreGenerate() {
+    // print(genreLists.length);
     final List<Widget> results = <Widget>[];
     for (final int iter in genreIds) {
       final MovieGenre currentGenre =
@@ -401,7 +402,7 @@ class MovieDetailsDisplay extends StatelessWidget {
               Expanded(
                 child: Text(
                   'Original Title:',
-                  style: Theme.of(context).textTheme.bodyText1,
+                  style: Theme.of(context).textTheme.bodyText2,
                 ),
               ),
               Expanded(
@@ -413,13 +414,12 @@ class MovieDetailsDisplay extends StatelessWidget {
               ),
             ],
           ),
-          const Spacer(),
           Row(
             children: <Widget>[
               Expanded(
                 child: Text(
                   'Status:',
-                  style: Theme.of(context).textTheme.bodyText1,
+                  style: Theme.of(context).textTheme.bodyText2,
                 ),
               ),
               Expanded(
@@ -431,13 +431,12 @@ class MovieDetailsDisplay extends StatelessWidget {
               ),
             ],
           ),
-          const Spacer(),
           Row(
             children: <Widget>[
               Expanded(
                 child: Text(
                   'Runtime:',
-                  style: Theme.of(context).textTheme.bodyText1,
+                  style: Theme.of(context).textTheme.bodyText2,
                 ),
               ),
               Expanded(
@@ -449,13 +448,12 @@ class MovieDetailsDisplay extends StatelessWidget {
               ),
             ],
           ),
-          const Spacer(),
           Row(
             children: <Widget>[
               Expanded(
                 child: Text(
                   'Type:',
-                  style: Theme.of(context).textTheme.bodyText1,
+                  style: Theme.of(context).textTheme.bodyText2,
                 ),
               ),
               Expanded(
@@ -467,13 +465,12 @@ class MovieDetailsDisplay extends StatelessWidget {
               ),
             ],
           ),
-          const Spacer(),
           Row(
             children: <Widget>[
               Expanded(
                 child: Text(
                   'Premiere:',
-                  style: Theme.of(context).textTheme.bodyText1,
+                  style: Theme.of(context).textTheme.bodyText2,
                 ),
               ),
               Expanded(
@@ -485,13 +482,12 @@ class MovieDetailsDisplay extends StatelessWidget {
               ),
             ],
           ),
-          const Spacer(),
           Row(
             children: <Widget>[
               Expanded(
                 child: Text(
                   'Budget:',
-                  style: Theme.of(context).textTheme.bodyText1,
+                  style: Theme.of(context).textTheme.bodyText2,
                 ),
               ),
               Expanded(
@@ -503,13 +499,12 @@ class MovieDetailsDisplay extends StatelessWidget {
               ),
             ],
           ),
-          const Spacer(),
           Row(
             children: <Widget>[
               Expanded(
                 child: Text(
                   'Revenue:',
-                  style: Theme.of(context).textTheme.bodyText1,
+                  style: Theme.of(context).textTheme.bodyText2,
                 ),
               ),
               Expanded(
@@ -521,13 +516,12 @@ class MovieDetailsDisplay extends StatelessWidget {
               ),
             ],
           ),
-          const Spacer(),
           Row(
             children: <Widget>[
               Expanded(
                 child: Text(
                   'Homepage:',
-                  style: Theme.of(context).textTheme.bodyText1,
+                  style: Theme.of(context).textTheme.bodyText2,
                 ),
               ),
               Expanded(
@@ -547,13 +541,12 @@ class MovieDetailsDisplay extends StatelessWidget {
               ),
             ],
           ),
-          const Spacer(),
           Row(
             children: <Widget>[
               Expanded(
                 child: Text(
                   'Imdb:',
-                  style: Theme.of(context).textTheme.bodyText1,
+                  style: Theme.of(context).textTheme.bodyText2,
                 ),
               ),
               Expanded(
@@ -571,8 +564,12 @@ class MovieDetailsDisplay extends StatelessWidget {
               ),
             ],
           ),
-          const Spacer(),
-        ],
+        ]
+            .map((Widget e) => Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: e,
+                ))
+            .toList(),
       ),
     );
   }
