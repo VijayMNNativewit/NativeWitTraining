@@ -70,7 +70,23 @@ class _CastDetailsPageSliverState extends State<CastDetailsPageSliver>
                       //     ),
                       //   ),
                       // ),
-                      child: CircleAvatar(
+
+                      child: Material(
+                        shape: const CircleBorder(),
+                        clipBehavior: Clip.antiAlias,
+                        //color: context.theme.disabledColor,
+                        child: SizedBox(
+                          width: 72,
+                          height: 72,
+                          child: Image.network(
+                            NetworkApiRoutes.imageSource + widget.profilePath,
+                            fit: BoxFit.fitHeight,
+                          ),
+                        ),
+                      ),
+                      //This is the code
+
+                      /* child: CircleAvatar(
                         //radius: 100,
                         child: Image.network(
                           NetworkApiRoutes.imageSource + widget.profilePath,
@@ -82,7 +98,7 @@ class _CastDetailsPageSliverState extends State<CastDetailsPageSliver>
                         //   // scale: 100.0,
                         // ),
                         //backgroundColor: Colors.transparent,
-                      ),
+                      ),*/
                     ),
                     decoration: const BoxDecoration(
                       gradient: LinearGradient(
