@@ -85,6 +85,7 @@ class _CastDetailsPageSliverState extends State<CastDetailsPageSliver>
                         ),
                       ),
                       //This is the code
+                      // For Avatar Image
 
                       /* child: CircleAvatar(
                         //radius: 100,
