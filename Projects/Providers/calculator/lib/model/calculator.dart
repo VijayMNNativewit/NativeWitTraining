@@ -85,14 +85,12 @@ class Calculator extends ChangeNotifier {
       } else if (numbers.contains(tokens[i])) {
         double value = 0;
         bool decimalCheck = false;
-        int j = 1;
         while (i < tokens.length && numbers.contains(tokens[i])) {
           if (tokens[i] == '.') {
             decimalCheck = true;
             i += 1;
             continue;
           } else if (decimalCheck) {
-            j += 1;
             value = value + double.parse(tokens[i]) * 0.10;
           } else {
             value = value * 10 + double.parse(tokens[i]);
