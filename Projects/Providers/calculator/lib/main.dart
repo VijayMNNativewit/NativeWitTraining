@@ -6,8 +6,8 @@ import 'views/home/calculator_home_page_screen.dart';
 void main() {
   runApp(
     MultiProvider(
-      providers: [
-        ChangeNotifierProvider(
+      providers: <ListenableProvider<dynamic>>[
+        ChangeNotifierProvider<Calculator>(
           create: (_) {
             return Calculator();
           },
