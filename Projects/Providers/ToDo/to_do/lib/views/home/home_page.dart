@@ -1,7 +1,7 @@
 import 'package:built_collection/built_collection.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:to_do/models/todo.dart';
+import 'package:to_do/views/tasks/tasks_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key key}) : super(key: key);
@@ -25,13 +25,13 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    toDosLists = List<ToDo>.generate(5, (int index) {
+    toDosLists = List<ToDo>.generate(10, (int index) {
       return ToDo((ToDoBuilder b) {
         b
           ..completed = false
           ..userId = 1
           ..id = index + 1
-          ..title = 'Learn Provider$index';
+          ..title = 'Learn Provider${index + 1}';
         return b;
       });
     }).toBuiltList();
@@ -113,7 +113,7 @@ class _HomePageState extends State<HomePage> {
             ),
             Container(
               // color: Colors.blue,
-              padding: EdgeInsets.all(
+              padding: const EdgeInsets.all(
                 40.0,
               ),
               child: TasksCard(
@@ -136,7 +136,7 @@ class _HomePageState extends State<HomePage> {
 }
 
 class TasksCard extends StatelessWidget {
-  TasksCard({Key key, this.tasksList}) : super(key: key);
+  const TasksCard({Key key, this.tasksList}) : super(key: key);
   final BuiltList<Task> tasksList;
   @override
   Widget build(BuildContext context) {
@@ -151,106 +151,118 @@ class TasksCard extends StatelessWidget {
         controller: controller,
         itemCount: 5,
         itemBuilder: (BuildContext context, int index) {
-          return Card(
-            color: Colors.white,
-            // elevation: 5,
-            // shadowColor: Colors.black,
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(
-                Radius.elliptical(
-                  10,
-                  10,
+          return InkWell(
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute<void>(builder: (BuildContext context) {
+                  return TasksPage(
+                    tasksList: tasksList,
+                    index: index,
+                  );
+                }),
+              );
+            },
+            child: Card(
+              color: Colors.white,
+              // elevation: 5,
+              // shadowColor: Colors.black,
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(
+                  Radius.elliptical(
+                    10,
+                    10,
+                  ),
                 ),
               ),
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Container(
-                      padding: const EdgeInsets.all(
-                        5.0,
-                      ),
-                      decoration: BoxDecoration(
-                        // shape: BoxShape.circle,
-                        color: Colors.white,
-                        boxShadow: const <BoxShadow>[
-                          BoxShadow(
-                            color: Colors.black,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Container(
+                        padding: const EdgeInsets.all(
+                          5.0,
+                        ),
+                        decoration: BoxDecoration(
+                          // shape: BoxShape.circle,
+                          color: Colors.white,
+                          boxShadow: const <BoxShadow>[
+                            BoxShadow(
+                              color: Colors.black,
+                            ),
+                          ],
+                          borderRadius: BorderRadius.circular(
+                            50.0,
                           ),
-                        ],
-                        borderRadius: BorderRadius.circular(
-                          50.0,
+                        ),
+                        child: Icon(
+                          Icons.alarm,
+                          color: Theme.of(context).primaryIconTheme.color,
+                          size: Theme.of(context).primaryIconTheme.size,
                         ),
                       ),
-                      child: Icon(
-                        Icons.alarm,
-                        color: Theme.of(context).primaryIconTheme.color,
+                      Icon(
+                        Icons.more_vert,
+                        color: Colors.black,
                         size: Theme.of(context).primaryIconTheme.size,
                       ),
-                    ),
-                    Icon(
-                      Icons.more_vert,
-                      color: Colors.black,
-                      size: Theme.of(context).primaryIconTheme.size,
-                    ),
-                  ],
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: <Widget>[
-                    Text(
-                      '${tasksList[index].noOfTasks} Tasks',
-                      textAlign: TextAlign.start,
-                    ),
-                    Text(
-                      '${tasksList[index].taskName}',
-                      style: TextStyle(
-                        fontSize:
-                            Theme.of(context).textTheme.headline4.fontSize,
+                    ],
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      Text(
+                        '${tasksList[index].noOfTasks} Tasks',
+                        textAlign: TextAlign.start,
                       ),
-                    ),
-                    Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.3,
-                            child: LinearProgressIndicator(
-                              minHeight: 5,
-                              backgroundColor: Colors.grey,
-                              value:
-                                  tasksList[index].percentage.toDouble() / 100,
-                              valueColor: AlwaysStoppedAnimation<Color>(
-                                Colors.red,
+                      Text(
+                        tasksList[index].taskName,
+                        style: TextStyle(
+                          fontSize:
+                              Theme.of(context).textTheme.headline4.fontSize,
+                        ),
+                      ),
+                      Row(
+                        children: <Widget>[
+                          Expanded(
+                            child: SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.3,
+                              child: LinearProgressIndicator(
+                                minHeight: 5,
+                                backgroundColor: Colors.grey,
+                                value: tasksList[index].percentage.toDouble() /
+                                    100,
+                                valueColor: const AlwaysStoppedAnimation<Color>(
+                                  Colors.red,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text('${tasksList[index].percentage}%'),
-                        ),
-                      ],
-                    ),
-                  ].map((Widget child) {
-                    return Padding(
-                      padding: const EdgeInsets.all(
-                        5.0,
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text('${tasksList[index].percentage}%'),
+                          ),
+                        ],
                       ),
-                      child: child,
-                    );
-                  }).toList(),
-                ),
-              ].map((Widget child) {
-                return Padding(
-                  child: child,
-                  padding: const EdgeInsets.all(
-                    20.0,
+                    ].map((Widget child) {
+                      return Padding(
+                        padding: const EdgeInsets.all(
+                          5.0,
+                        ),
+                        child: child,
+                      );
+                    }).toList(),
                   ),
-                );
-              }).toList(),
+                ].map((Widget child) {
+                  return Padding(
+                    child: child,
+                    padding: const EdgeInsets.all(
+                      20.0,
+                    ),
+                  );
+                }).toList(),
+              ),
             ),
           );
         },
