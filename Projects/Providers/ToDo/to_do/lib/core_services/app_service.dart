@@ -7,6 +7,7 @@ import 'api_service.dart';
 
 class AppService implements ApiService {
   static const String toDoSource = 'https://jsonplaceholder.typicode.com/todos';
+  static const String toDoSourcePost = 'https://jsonplaceholder.typicode.com';
 
   final Map<String, String> _headers = <String, String>{
     'Content-type': 'application/json; charset=UTF-8'
@@ -37,11 +38,13 @@ class AppService implements ApiService {
   ) async {
     final String body = jsonEncode(toDoItem.toJson());
     final http.Response response = await http.post(
-      Uri.parse('$toDoSource/users/1/todos'),
+      Uri.parse('$toDoSourcePost/users/1/todos'),
       body: body,
       headers: _headers,
     );
-    final String jsonString = response.body;
+    String jsonString = response.body;
+    // print('Status Code of HTTP Response: ${response.statusCode}');
+    // print(response.body);
     return parseToDo(jsonString);
   }
 
@@ -64,8 +67,9 @@ class AppService implements ApiService {
   }
 
   ToDo parseToDo(String jsonString) {
-    final Map<String, dynamic> parsed =
+    Map<String, dynamic> parsed =
         jsonDecode(jsonString) as Map<String, dynamic>;
+    parsed['userId'] = int.parse(parsed['userId'].toString());
     return ToDo.fromJson(parsed);
   }
 

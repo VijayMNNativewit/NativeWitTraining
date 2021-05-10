@@ -25,22 +25,74 @@ void main() {
         ..userId = 1;
       return b;
     });
+
+    ToDo apiToDoItem1 = ToDo((ToDoBuilder b) {
+      b
+        ..id = 1
+        ..completed = false
+        ..title = 'delectus aut autem'
+        ..userId = 1;
+      return b;
+    });
+    ToDo apiToDoItem2 = ToDo((ToDoBuilder b) {
+      b
+        ..id = 10
+        ..completed = false
+        ..title = 'New ToDo'
+        ..userId = 1;
+      return b;
+    });
+    ToDo apiToDoItem3 = ToDo((ToDoBuilder b) {
+      b
+        ..id = 1
+        ..completed = true
+        ..title = 'delectus aut autem ToDo'
+        ..userId = 1;
+      return b;
+    });
+    ToDo apiToDoItem4 = ToDo((ToDoBuilder b) {
+      b
+        ..id = 201
+        ..completed = false
+        ..title = 'New ToDo'
+        ..userId = 1;
+      return b;
+    });
+    // test('Fetch To Dos', () async {
+    //   BuiltList<ToDo> fetchedToDos = await mockObject.getToDos();
+    //   expect(fetchedToDos[0].title, 'Test Obj1');
+    //   expect(fetchedToDos[1].title, 'Test Obj2');
+    // });
+    // test('Post To Dos', () async {
+    //   ToDo postedToDo = await mockObject.postToDos(toDoItem2);
+    //   // print(postedToDo);
+    //   expect(postedToDo, toDoItem2);
+    // });
+    // test('Update To Dos', () async {
+    //   ToDo updatedToDo = await mockObject.updateToDos(toDoItem1);
+    //   expect(updatedToDo, toDoItem1);
+    // });
+    // test('Delete To Dos', () async {
+    //   bool deleteToDo = await mockObject.deleteToDos(toDoItem1);
+    //   expect(deleteToDo, true);
+    // });
+
     test('Fetch To Dos', () async {
-      BuiltList<ToDo> fetchedToDos = await mockObject.getToDos();
-      expect(fetchedToDos[0].title, 'Test Obj1');
-      expect(fetchedToDos[1].title, 'Test Obj2');
+      BuiltList<ToDo> fetchedToDos = await testObject.getToDos();
+      // print(fetchedToDos);
+      expect(fetchedToDos[0], apiToDoItem1);
     });
     test('Post To Dos', () async {
-      ToDo postedToDo = await mockObject.postToDos(toDoItem2);
+      ToDo postedToDo = await testObject.postToDos(apiToDoItem2);
       // print(postedToDo);
-      expect(postedToDo, toDoItem2);
+      expect(postedToDo, apiToDoItem4);
     });
     test('Update To Dos', () async {
-      ToDo updatedToDo = await mockObject.updateToDos(toDoItem1);
-      expect(updatedToDo, toDoItem1);
+      ToDo updatedToDo = await testObject.updateToDos(apiToDoItem3);
+      expect(updatedToDo, apiToDoItem3);
     });
     test('Delete To Dos', () async {
-      bool deleteToDo = await mockObject.deleteToDos(toDoItem1);
+      bool deleteToDo = await testObject.deleteToDos(apiToDoItem3);
       expect(deleteToDo, true);
     });
   });
