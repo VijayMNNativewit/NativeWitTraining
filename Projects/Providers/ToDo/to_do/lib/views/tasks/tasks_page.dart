@@ -112,11 +112,20 @@ class TasksPage extends StatelessWidget {
               const Text(
                 'Previous - Thu',
               ),
-              ListOfTasks(tasksList: tasksList),
+              ListOfTasks(
+                tasksList: tasksList,
+                splitToDoList: tasksList[0].toDosList.sublist(
+                      0,
+                      5,
+                    ),
+              ),
               const Text(
                 'Previous - Fri',
               ),
-              ListOfTasks(tasksList: tasksList),
+              ListOfTasks(
+                tasksList: tasksList,
+                splitToDoList: tasksList[0].toDosList.sublist(5),
+              ),
             ],
           ),
         ),
@@ -129,191 +138,71 @@ class ListOfTasks extends StatefulWidget {
   const ListOfTasks({
     Key key,
     @required this.tasksList,
+    this.splitToDoList,
   }) : super(key: key);
   final BuiltList<Task> tasksList;
+  final BuiltList<ToDo> splitToDoList;
   @override
   _ListOfTasksState createState() => _ListOfTasksState();
 }
 
 class _ListOfTasksState extends State<ListOfTasks> {
-  bool checkBoxValue;
+  List<bool> checkBoxValue = <bool>[];
+  int iter = 0;
 
   @override
   void initState() {
     super.initState();
-    checkBoxValue = widget.tasksList[0].toDosList[0].completed;
+
+    for (var iterValue in widget.splitToDoList) {
+      checkBoxValue.add(widget.splitToDoList[iter].completed);
+      iter += 1;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      // height: MediaQuery.of(context).size.height * 0.5,
+      // width: MediaQuery.of(context).size.width * 0.7,
       padding: const EdgeInsets.only(
         top: 24,
         bottom: 24,
       ),
       child: Column(
         children: <Widget>[
-          Row(
-            children: <Widget>[
-              Expanded(
-                child: CheckboxListTile(
-                  controlAffinity: ListTileControlAffinity.leading,
-                  value: checkBoxValue,
-                  // value: widget.tasksList[0].toDosList[0].completed,
-                  activeColor: Colors.red,
-                  title: Text(
-                    widget.tasksList[0].toDosList[0].title,
-                    style: const TextStyle(
-                      color: Colors.black,
+          ListView.builder(
+            shrinkWrap: true,
+            itemCount: widget.splitToDoList.length,
+            itemBuilder: (BuildContext context, int index) {
+              return Row(
+                children: <Widget>[
+                  Expanded(
+                    child: CheckboxListTile(
+                      controlAffinity: ListTileControlAffinity.leading,
+                      value: checkBoxValue[index],
+                      // value: widget.tasksList[0].toDosList[0].completed,
+                      activeColor: Colors.red,
+                      title: Text(
+                        widget.splitToDoList[index].title,
+                        style: const TextStyle(
+                          color: Colors.black,
+                        ),
+                      ),
+                      secondary: const Icon(
+                        Icons.alarm,
+                      ),
+                      onChanged: (bool newValue) {
+                        setState(() {
+                          widget.splitToDoList[index].completed = newValue;
+                          checkBoxValue[index] = newValue;
+                        });
+                      },
                     ),
                   ),
-                  secondary: const Icon(
-                    Icons.alarm,
-                  ),
-                  onChanged: (bool newValue) {
-                    setState(() {
-                      widget.tasksList[0].toDosList[0].completed = newValue;
-                      checkBoxValue = newValue;
-                    });
-                  },
-                ),
-              ),
-            ],
-          ),
-          Row(
-            children: <Widget>[
-              Expanded(
-                child: CheckboxListTile(
-                  controlAffinity: ListTileControlAffinity.leading,
-                  value: checkBoxValue,
-                  // value: widget.tasksList[0].toDosList[0].completed,
-                  activeColor: Colors.red,
-                  title: Text(
-                    widget.tasksList[0].toDosList[0].title,
-                    style: const TextStyle(
-                      color: Colors.black,
-                    ),
-                  ),
-                  secondary: const Icon(
-                    Icons.alarm,
-                  ),
-                  onChanged: (bool newValue) {
-                    setState(() {
-                      widget.tasksList[0].toDosList[0].completed = newValue;
-                      checkBoxValue = newValue;
-                    });
-                  },
-                ),
-              ),
-            ],
-          ),
-          Row(
-            children: <Widget>[
-              Expanded(
-                child: CheckboxListTile(
-                  controlAffinity: ListTileControlAffinity.leading,
-                  value: checkBoxValue,
-                  // value: widget.tasksList[0].toDosList[0].completed,
-                  activeColor: Colors.red,
-                  title: Text(
-                    widget.tasksList[0].toDosList[0].title,
-                    style: const TextStyle(
-                      color: Colors.black,
-                    ),
-                  ),
-                  secondary: const Icon(
-                    Icons.alarm,
-                  ),
-                  onChanged: (bool newValue) {
-                    setState(() {
-                      widget.tasksList[0].toDosList[0].completed = newValue;
-                      checkBoxValue = newValue;
-                    });
-                  },
-                ),
-              ),
-            ],
-          ),
-          Row(
-            children: <Widget>[
-              Expanded(
-                child: CheckboxListTile(
-                  controlAffinity: ListTileControlAffinity.leading,
-                  value: checkBoxValue,
-                  // value: widget.tasksList[0].toDosList[0].completed,
-                  activeColor: Colors.red,
-                  title: Text(
-                    widget.tasksList[0].toDosList[0].title,
-                    style: const TextStyle(
-                      color: Colors.black,
-                    ),
-                  ),
-                  secondary: const Icon(
-                    Icons.alarm,
-                  ),
-                  onChanged: (bool newValue) {
-                    setState(() {
-                      widget.tasksList[0].toDosList[0].completed = newValue;
-                      checkBoxValue = newValue;
-                    });
-                  },
-                ),
-              ),
-            ],
-          ),
-          Row(
-            children: <Widget>[
-              Expanded(
-                child: CheckboxListTile(
-                  controlAffinity: ListTileControlAffinity.leading,
-                  value: checkBoxValue,
-                  // value: widget.tasksList[0].toDosList[0].completed,
-                  activeColor: Colors.red,
-                  title: Text(
-                    widget.tasksList[0].toDosList[0].title,
-                    style: const TextStyle(
-                      color: Colors.black,
-                    ),
-                  ),
-                  secondary: const Icon(
-                    Icons.alarm,
-                  ),
-                  onChanged: (bool newValue) {
-                    setState(() {
-                      widget.tasksList[0].toDosList[0].completed = newValue;
-                      checkBoxValue = newValue;
-                    });
-                  },
-                ),
-              ),
-            ],
-          ),
-          Row(
-            children: <Widget>[
-              Expanded(
-                child: CheckboxListTile(
-                  controlAffinity: ListTileControlAffinity.leading,
-                  value: checkBoxValue,
-                  // value: widget.tasksList[0].toDosList[0].completed,
-                  activeColor: Colors.red,
-                  title: Text(
-                    widget.tasksList[0].toDosList[0].title,
-                    style: const TextStyle(
-                      color: Colors.black,
-                    ),
-                  ),
-                  secondary: const Icon(
-                    Icons.alarm,
-                  ),
-                  onChanged: (bool newValue) {
-                    setState(() {
-                      widget.tasksList[0].toDosList[0].completed = newValue;
-                      checkBoxValue = newValue;
-                    });
-                  },
-                ),
-              ),
-            ],
+                ],
+              );
+            },
           ),
         ],
       ),
