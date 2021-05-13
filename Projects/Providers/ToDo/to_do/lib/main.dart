@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:to_do/views/home/home_page.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:to_do/views/test_page/test_page_ui.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const ToDoApp());
 }
 
@@ -12,7 +16,8 @@ class ToDoApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const HomePage(),
+      // home: const HomePage(),
+      home: const TestUI(),
       theme: buildThemeData(),
     );
   }

@@ -1,14 +1,19 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:to_do/core_services/firebase_service.dart';
 import 'package:to_do/core_services/mock_api_service.dart';
 import 'package:to_do/models/todo.dart';
-import 'package:to_do/core_services/app_service.dart';
-import 'package:built_collection/built_collection.dart';
 import 'package:to_do/core_services/api_service.dart';
+import 'package:built_collection/built_collection.dart';
+import 'package:to_do/core_services/app_service.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
+Future<void> main() async {
+  TestWidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   group('App Service Tests', () {
-    ApiService testObject = AppService();
-    ApiService mockObject = MockAPI();
+    AppService testObject = ApiService();
+    AppService mockObject = MockAPI();
+    // AppService firebaseObject = FirebaseService();
     ToDo toDoItem1 = ToDo((ToDoBuilder b) {
       b
         ..id = 1
@@ -58,24 +63,24 @@ void main() {
         ..userId = 1;
       return b;
     });
-    // test('Fetch To Dos', () async {
-    //   BuiltList<ToDo> fetchedToDos = await mockObject.getToDos();
-    //   expect(fetchedToDos[0].title, 'Test Obj1');
-    //   expect(fetchedToDos[1].title, 'Test Obj2');
-    // });
-    // test('Post To Dos', () async {
-    //   ToDo postedToDo = await mockObject.postToDos(toDoItem2);
-    //   // print(postedToDo);
-    //   expect(postedToDo, toDoItem2);
-    // });
-    // test('Update To Dos', () async {
-    //   ToDo updatedToDo = await mockObject.updateToDos(toDoItem1);
-    //   expect(updatedToDo, toDoItem1);
-    // });
-    // test('Delete To Dos', () async {
-    //   bool deleteToDo = await mockObject.deleteToDos(toDoItem1);
-    //   expect(deleteToDo, true);
-    // });
+    test('Fetch To Dos', () async {
+      BuiltList<ToDo> fetchedToDos = await mockObject.getToDos();
+      expect(fetchedToDos[0].title, 'Test Obj1');
+      expect(fetchedToDos[1].title, 'Test Obj2');
+    });
+    test('Post To Dos', () async {
+      ToDo postedToDo = await mockObject.postToDos(toDoItem2);
+      // print(postedToDo);
+      expect(postedToDo, toDoItem2);
+    });
+    test('Update To Dos', () async {
+      ToDo updatedToDo = await mockObject.updateToDos(toDoItem1);
+      expect(updatedToDo, toDoItem1);
+    });
+    test('Delete To Dos', () async {
+      bool deleteToDo = await mockObject.deleteToDos(toDoItem1);
+      expect(deleteToDo, true);
+    });
 
     test('Fetch To Dos', () async {
       BuiltList<ToDo> fetchedToDos = await testObject.getToDos();

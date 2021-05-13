@@ -1,11 +1,8 @@
-import 'dart:convert';
-
 import 'package:built_collection/built_collection.dart';
 import 'package:to_do/models/todo.dart';
-import 'package:http/http.dart' as http;
-import 'api_service.dart';
+import 'app_service.dart';
 
-class MockAPI extends ApiService {
+class MockAPI implements AppService {
   ToDo toDoObj = ToDo((ToDoBuilder b) {
     b
       ..id = 1
