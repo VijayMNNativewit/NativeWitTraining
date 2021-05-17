@@ -83,6 +83,13 @@ abstract class Task implements Built<Task, TaskBuilder> {
   Task._();
 
   @nullable
+  int get taskId;
+
+  set taskId(int taskId) {
+    taskId = taskId;
+  }
+
+  @nullable
   BuiltList<ToDo> get toDosList;
 
   set toDosList(BuiltList<ToDo> toDosList) {
@@ -109,4 +116,15 @@ abstract class Task implements Built<Task, TaskBuilder> {
   set percentage(int percentage) {
     percentage = percentage;
   }
+
+  Map<String, dynamic> toJson() {
+    return serializers.serializeWith(Task.serializer, this)
+        as Map<String, dynamic>;
+  }
+
+  static Task fromJson(Map<String, dynamic> jsonString) {
+    return serializers.deserializeWith(Task.serializer, jsonString);
+  }
+
+  static Serializer<Task> get serializer => _$taskSerializer;
 }

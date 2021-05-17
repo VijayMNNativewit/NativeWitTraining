@@ -16,8 +16,8 @@ class ToDoApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      // home: const HomePage(),
-      home: const TestUI(),
+      home: const HomePage(),
+      // home: const TestUI(),
       theme: buildThemeData(),
     );
   }
@@ -43,6 +43,9 @@ class ToDoApp extends StatelessWidget {
         ),
         subtitle1: TextStyle(
           color: Colors.white,
+        ),
+        subtitle2: TextStyle(
+          color: Colors.black,
         ),
       ),
     );

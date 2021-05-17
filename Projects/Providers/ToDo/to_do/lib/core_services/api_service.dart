@@ -42,7 +42,7 @@ class ApiService implements AppService {
       body: body,
       headers: _headers,
     );
-    String jsonString = response.body;
+    final String jsonString = response.body;
     // print('Status Code of HTTP Response: ${response.statusCode}');
     // print(response.body);
     return parseToDo(jsonString);
@@ -67,7 +67,7 @@ class ApiService implements AppService {
   }
 
   ToDo parseToDo(String jsonString) {
-    Map<String, dynamic> parsed =
+    final Map<String, dynamic> parsed =
         jsonDecode(jsonString) as Map<String, dynamic>;
     parsed['userId'] = int.parse(parsed['userId'].toString());
     return ToDo.fromJson(parsed);

@@ -7,6 +7,7 @@ part of todo;
 // **************************************************************************
 
 Serializer<ToDo> _$toDoSerializer = new _$ToDoSerializer();
+Serializer<Task> _$taskSerializer = new _$TaskSerializer();
 
 class _$ToDoSerializer implements StructuredSerializer<ToDo> {
   @override
@@ -74,6 +75,93 @@ class _$ToDoSerializer implements StructuredSerializer<ToDo> {
         case 'completed':
           result.completed = serializers.deserialize(value,
               specifiedType: const FullType(bool)) as bool;
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
+class _$TaskSerializer implements StructuredSerializer<Task> {
+  @override
+  final Iterable<Type> types = const [Task, _$Task];
+  @override
+  final String wireName = 'Task';
+
+  @override
+  Iterable<Object> serialize(Serializers serializers, Task object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object>[];
+    Object value;
+    value = object.taskId;
+    if (value != null) {
+      result
+        ..add('taskId')
+        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
+    }
+    value = object.toDosList;
+    if (value != null) {
+      result
+        ..add('toDosList')
+        ..add(serializers.serialize(value,
+            specifiedType:
+                const FullType(BuiltList, const [const FullType(ToDo)])));
+    }
+    value = object.taskName;
+    if (value != null) {
+      result
+        ..add('taskName')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
+    value = object.noOfTasks;
+    if (value != null) {
+      result
+        ..add('noOfTasks')
+        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
+    }
+    value = object.percentage;
+    if (value != null) {
+      result
+        ..add('percentage')
+        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
+    }
+    return result;
+  }
+
+  @override
+  Task deserialize(Serializers serializers, Iterable<Object> serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new TaskBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current as String;
+      iterator.moveNext();
+      final Object value = iterator.current;
+      switch (key) {
+        case 'taskId':
+          result.taskId = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int;
+          break;
+        case 'toDosList':
+          result.toDosList.replace(serializers.deserialize(value,
+                  specifiedType:
+                      const FullType(BuiltList, const [const FullType(ToDo)]))
+              as BuiltList<Object>);
+          break;
+        case 'taskName':
+          result.taskName = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+        case 'noOfTasks':
+          result.noOfTasks = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int;
+          break;
+        case 'percentage':
+          result.percentage = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int;
           break;
       }
     }
@@ -203,6 +291,8 @@ class ToDoBuilder implements Builder<ToDo, ToDoBuilder> {
 
 class _$Task extends Task {
   @override
+  final int taskId;
+  @override
   final BuiltList<ToDo> toDosList;
   @override
   final String taskName;
@@ -214,7 +304,12 @@ class _$Task extends Task {
   factory _$Task([void Function(TaskBuilder) updates]) =>
       (new TaskBuilder()..update(updates)).build();
 
-  _$Task._({this.toDosList, this.taskName, this.noOfTasks, this.percentage})
+  _$Task._(
+      {this.taskId,
+      this.toDosList,
+      this.taskName,
+      this.noOfTasks,
+      this.percentage})
       : super._();
 
   @override
@@ -228,6 +323,7 @@ class _$Task extends Task {
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
     return other is Task &&
+        taskId == other.taskId &&
         toDosList == other.toDosList &&
         taskName == other.taskName &&
         noOfTasks == other.noOfTasks &&
@@ -237,7 +333,9 @@ class _$Task extends Task {
   @override
   int get hashCode {
     return $jf($jc(
-        $jc($jc($jc(0, toDosList.hashCode), taskName.hashCode),
+        $jc(
+            $jc($jc($jc(0, taskId.hashCode), toDosList.hashCode),
+                taskName.hashCode),
             noOfTasks.hashCode),
         percentage.hashCode));
   }
@@ -245,6 +343,7 @@ class _$Task extends Task {
   @override
   String toString() {
     return (newBuiltValueToStringHelper('Task')
+          ..add('taskId', taskId)
           ..add('toDosList', toDosList)
           ..add('taskName', taskName)
           ..add('noOfTasks', noOfTasks)
@@ -255,6 +354,10 @@ class _$Task extends Task {
 
 class TaskBuilder implements Builder<Task, TaskBuilder> {
   _$Task _$v;
+
+  int _taskId;
+  int get taskId => _$this._taskId;
+  set taskId(int taskId) => _$this._taskId = taskId;
 
   ListBuilder<ToDo> _toDosList;
   ListBuilder<ToDo> get toDosList =>
@@ -278,6 +381,7 @@ class TaskBuilder implements Builder<Task, TaskBuilder> {
   TaskBuilder get _$this {
     final $v = _$v;
     if ($v != null) {
+      _taskId = $v.taskId;
       _toDosList = $v.toDosList?.toBuilder();
       _taskName = $v.taskName;
       _noOfTasks = $v.noOfTasks;
@@ -304,6 +408,7 @@ class TaskBuilder implements Builder<Task, TaskBuilder> {
     try {
       _$result = _$v ??
           new _$Task._(
+              taskId: taskId,
               toDosList: _toDosList?.build(),
               taskName: taskName,
               noOfTasks: noOfTasks,

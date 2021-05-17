@@ -2,7 +2,6 @@ import 'package:built_collection/built_collection.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:to_do/models/todo.dart';
 import 'app_service.dart';
-import 'package:firebase_core/firebase_core.dart';
 
 class FirebaseService implements AppService {
   FirebaseFirestore database = FirebaseFirestore.instance;
@@ -49,7 +48,7 @@ class FirebaseService implements AppService {
         .doc('Task2')
         .collection('ToDosList')
         .doc('ToDo1')
-        .set({
+        .set(<String, dynamic>{
       'id': 1,
       'title': 'Learn Firebase1',
       'userId': 2,

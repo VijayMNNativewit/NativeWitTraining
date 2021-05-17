@@ -1,6 +1,9 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:flutter/material.dart';
+import 'package:to_do/core_services/app_service.dart';
+import 'package:to_do/core_services/cloud_firestore_service.dart';
 import 'package:to_do/models/todo.dart';
+import 'package:to_do/views/forms/forms_page.dart';
 import 'package:to_do/views/tasks/tasks_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -19,37 +22,52 @@ class _HomePageState extends State<HomePage> {
     Colors.orange,
   ];
   int colorIndex = 0;
-  int totalNoOfTasks = 10;
   BuiltList<ToDo> toDosLists = <ToDo>[].toBuiltList();
   BuiltList<Task> tasksList = <Task>[Task()].toBuiltList();
+  BuiltList<Task> tasksListFirestore = <Task>[].toBuiltList();
+  BuiltList<ToDo> toDosListFirestore = <ToDo>[].toBuiltList();
+  CloudFirestoreService cloudFirestoreInstance = CloudFirestoreService();
+  bool isLoading = true;
   @override
   void initState() {
     super.initState();
-    toDosLists = List<ToDo>.generate(10, (int index) {
-      return ToDo((ToDoBuilder b) {
-        b
-          ..completed = false
-          ..userId = 1
-          ..id = index + 1
-          ..title = 'Learn Provider${index + 1}';
-        return b;
-      });
-    }).toBuiltList();
-    tasksList = List<Task>.generate(5, (int index) {
-      return Task((TaskBuilder b) {
-        b
-          ..toDosList = toDosLists.toBuilder()
-          ..percentage = 80 + index
-          ..noOfTasks = 10 + index
-          ..taskName = 'Custom${index + 1}';
-        return b;
-      });
-    }).toBuiltList();
+    // toDosLists = List<ToDo>.generate(10, (int index) {
+    //   return ToDo((ToDoBuilder b) {
+    //     b
+    //       ..completed = false
+    //       ..userId = 1
+    //       ..id = index + 1
+    //       ..title = 'Learn Provider${index + 1}';
+    //     return b;
+    //   });
+    // }).toBuiltList();
+    // tasksList = List<Task>.generate(5, (int index) {
+    //   return Task((TaskBuilder b) {
+    //     b
+    //       ..toDosList = toDosLists.toBuilder()
+    //       ..percentage = 80 + index
+    //       ..noOfTasks = 10 + index
+    //       ..taskName = 'Custom${index + 1}';
+    //     return b;
+    //   });
+    // }).toBuiltList();
+    compute();
+  }
+
+  void compute() async {
+    tasksListFirestore = await cloudFirestoreInstance.getTasks();
+    // toDosListFirestore = await cloudFirestoreInstance.getToDos();
+    // print('ToDosList');
+    // print(tasksListFirestore[0].toDosList);
+    setState(() {
+      isLoading = false;
+    });
+    // print(tasksListFirestore);
   }
 
   @override
   Widget build(BuildContext context) {
-    assert(tasksList != null);
+    // assert(tasksList != null);
     return Scaffold(
       backgroundColor: colors[colorIndex],
       appBar: AppBar(
@@ -96,7 +114,7 @@ class _HomePageState extends State<HomePage> {
                       style: Theme.of(context).textTheme.subtitle1,
                     ),
                     Text(
-                      'You have $totalNoOfTasks tasks to do today.',
+                      'You have ${tasksListFirestore.length} tasks to do today.',
                       style: Theme.of(context).textTheme.subtitle1,
                     ),
                   ],
@@ -116,9 +134,12 @@ class _HomePageState extends State<HomePage> {
               padding: const EdgeInsets.all(
                 40.0,
               ),
-              child: TasksCard(
-                tasksList: tasksList,
-              ),
+              child: isLoading
+                  ? const CircularProgressIndicator()
+                  : TasksCard(
+                      tasksList: tasksListFirestore,
+                      // toDosList: toDosListFirestore,
+                    ),
             ),
           ],
         ),
@@ -128,7 +149,16 @@ class _HomePageState extends State<HomePage> {
           Icons.add,
         ),
         onPressed: () {
-          return;
+          Navigator.of(context).push(
+            MaterialPageRoute<void>(builder: (BuildContext context) {
+              return const FormsPage();
+            }),
+          );
+          compute();
+          // cloudFirestoreInstance.getToDos();
+          // cloudFirestoreInstance.deleteDB();
+          // cloudFirestoreInstance.createDB();
+          // return;
         },
       ),
     );
@@ -136,8 +166,13 @@ class _HomePageState extends State<HomePage> {
 }
 
 class TasksCard extends StatelessWidget {
-  const TasksCard({Key key, this.tasksList}) : super(key: key);
+  const TasksCard({
+    Key key,
+    this.tasksList,
+    // this.toDosList,
+  }) : super(key: key);
   final BuiltList<Task> tasksList;
+  // final BuiltList<ToDo> toDosList;
   @override
   Widget build(BuildContext context) {
     final PageController controller = PageController(
@@ -149,7 +184,7 @@ class TasksCard extends StatelessWidget {
       child: PageView.builder(
         scrollDirection: Axis.horizontal,
         controller: controller,
-        itemCount: 5,
+        itemCount: tasksList.length,
         itemBuilder: (BuildContext context, int index) {
           return InkWell(
             onTap: () {
@@ -157,6 +192,7 @@ class TasksCard extends StatelessWidget {
                 MaterialPageRoute<void>(builder: (BuildContext context) {
                   return TasksPage(
                     tasksList: tasksList,
+                    toDosList: tasksList[index].toDosList,
                     index: index,
                   );
                 }),
