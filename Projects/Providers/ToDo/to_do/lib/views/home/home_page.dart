@@ -1,8 +1,10 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:flutter/material.dart';
+// import 'package:moor_db_viewer/moor_db_viewer.dart';
 import 'package:to_do/core_services/app_service.dart';
 import 'package:to_do/core_services/cloud_firestore_service.dart';
 import 'package:to_do/models/todo.dart';
+import 'package:to_do/models/moor_database.dart';
 import 'package:to_do/views/forms/forms_page.dart';
 import 'package:to_do/views/tasks/tasks_page.dart';
 
@@ -69,6 +71,28 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     // assert(tasksList != null);
     return Scaffold(
+      drawer: Drawer(
+        child: ListView(
+          children: <Widget>[
+            // ListTile(
+            //   title: Text(
+            //     'View DB',
+            //     style: TextStyle(
+            //       color: Theme.of(context).textTheme.subtitle2.color,
+            //     ),
+            //   ),
+            //   onTap: () {
+            //     final db = AppDatabase();
+            //     Navigator.of(context).push(
+            //       MaterialPageRoute<void>(builder: (BuildContext context) {
+            //         return MoorDbViewer(db);
+            //       }),
+            //     );
+            //   },
+            // ),
+          ],
+        ),
+      ),
       backgroundColor: colors[colorIndex],
       appBar: AppBar(
         backgroundColor: colors[colorIndex],
